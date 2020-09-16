@@ -181,6 +181,9 @@ return [
         // PACKAGE LARAVEL COLLECTION
         Collective\Html\HtmlServiceProvider::class,
 
+        // PACKAGE LARAVEL DEBUGBAR
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
