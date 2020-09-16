@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // PACKAGE LARAVEL TELESCOPE
+        // App\Providers\TelescopeServiceProvider::class,
+
         // PACKAGE LARAVEL PERMISSION
         Spatie\Permission\PermissionServiceProvider::class,
 
