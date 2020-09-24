@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\MediaLibrary\MediaCollections\File;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'avatar_id',
     ];
 
     /**
@@ -38,4 +43,56 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Hash password
+     * @param $input
+     */
+    public function setPasswordAttribute($input)
+    {
+        if ($input) {
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+        }
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('avatar')
+            //->singleFile() // limitar a somente 1 imagem
+            //->useDisk('s3') // Usando um disco específico
+            //->onlyKeepLatest(3) // limitar a 3 imagens
+            ->useFallbackUrl('/img/no-user.png')
+            ->useFallbackPath(public_path('/img/no-user.png'))
+            ->withResponsiveImages()
+            ->acceptsFile(function (File $file) {
+                return in_array($file->mimeType, ['image/jpeg', 'image/png']);
+            })
+            ->registerMediaConversions(function (Media $media) {
+                // $this->addMediaConversion('card')
+                //     ->width(400)
+                //     ->height(300);
+
+                $this->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
+            });
+
+        $this
+            ->addMediaCollection('fotos')
+            ->acceptsFile(function (File $file) {
+                return in_array($file->mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/tiff']);
+            });
+
+        $this
+            ->addMediaCollection('videos')
+            ->acceptsFile(function (File $file) {
+                return in_array($file->mimeType, ['video/x-msvideo', 'video/mpeg']);
+            });
+    }
+
+    public function avatar()
+    {
+        return $this->hasOne(Media::class, 'id', 'avatar_id');
+    }
 }

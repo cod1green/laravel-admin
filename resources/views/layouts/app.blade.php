@@ -7,10 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <title>
+        @section('title')
+        {{ config('app.name', 'Laravel') }}
+        @show
+    </title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,7 +19,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('css')
+    @stack('css')
+
+    @yield('js-head')
+    @stack('js-head')
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -33,7 +41,17 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('home') }}">
+                                <i class="fa fa-btn fa-home"></i> Home
+                            </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.home') }}">
+                                <i class="fa fa-btn fa-tachometer-alt"></i> Painel
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -51,14 +69,29 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    @if(Auth::user()->avatar)
+                                        <img src="{{ Auth::user()->avatar->getUrl('thumb') }}" width="25" height="25"
+                                    alt="avatar" class="rounded-circle">
+                                    @else
+                                        <img src="{{ asset('img/no-user.png') }}" width="25" height="25" alt="avatar" class="rounded-circle">
+                                    @endif
+
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                        <i class="fa fa-btn fa-user"></i> @lang('admin.profile')
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('admin.home') }}">
+                                        <i class="fa fa-btn fa-tachometer-alt"></i> Painel
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="fas fa-power-off"></i> {{ __('Logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -76,5 +109,11 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    @yield('js')
+    @stack('js')
 </body>
 </html>

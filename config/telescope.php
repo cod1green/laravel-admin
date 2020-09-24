@@ -30,6 +30,7 @@ return [
     */
 
     'path' => env('TELESCOPE_PATH', 'admin/debug'),
+    'path' => env('TELESCOPE_PATH', config('admin.prefix') . '/debug'),
 
     /*
     |--------------------------------------------------------------------------
