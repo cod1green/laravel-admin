@@ -26,7 +26,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 mb-2">
-                <a href="{{ route('admin.users.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i> @lang('admin.users.create')</a>
+                <a href="{{ route('admin.users.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i>
+                    @lang('admin.users.create')</a>
             </div>
         </div>
         <div class="row">
@@ -36,13 +37,16 @@
                         <!-- <h3 class="card-title">All together</h3> -->
 
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                            <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                    class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
+                                    class="fas fa-expand"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                    class="fas fa-times"></i></button>
                         </div>
                     </div>
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>@lang('admin.name')</th>
@@ -64,7 +68,8 @@
                                     <td>{{ $user->permissions->pluck('name')->implode(', ') }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">
+                                            <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                class="btn btn-sm btn-warning">
                                                 <i class="fas fa-user-edit"></i> @lang('admin.edit')
                                             </a>
 

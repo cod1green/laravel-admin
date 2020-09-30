@@ -1,7 +1,7 @@
 @inject('request', 'Illuminate\Http\Request')
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-success elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
         <img src="{{ asset('vendor/admin-lte/dist/img/AdminLTELogo.png')}}" alt="..."
@@ -15,9 +15,11 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 @if(Auth::user()->avatar)
-                    <img src="{{ Auth::user()->avatar->getUrl('thumb') }}" class="img-circle elevation-2" style="width: 35px;height: 35px;">
+                <img src="{{ Auth::user()->avatar->getUrl('thumb') }}" class="img-circle elevation-2"
+                    style="width: 35px;height: 35px;">
                 @else
-                    <img src="{{ asset('img/no-user.png') }}" class="img-circle elevation-2" style="width: 35px;height: 35px;">
+                <img src="{{ asset('img/no-user.png') }}" class="img-circle elevation-2"
+                    style="width: 35px;height: 35px;">
                 @endif
             </div>
             <div class="info">
@@ -27,7 +29,8 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview"
+                role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="{{ route('home') }}" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
@@ -169,7 +172,8 @@
                 @endcanany
 
                 <li class="nav-item">
-                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <a href="{{ route('logout') }}" class="nav-link"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="nav-icon fas fa-power-off"></i>
                         <p>{{ __('Logout') }}</p>
                     </a>
