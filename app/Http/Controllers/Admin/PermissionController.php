@@ -4,16 +4,37 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Controller;
-
 use Spatie\Permission\Models\Role;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
+use Symfony\Component\HttpFoundation\Response;
 
 class PermissionController extends Controller
 {
+    private $permissions_not_removed = [
+        'role_create',
+        'role_edit',
+        'role_show',
+        'role_delete',
+        'role_access',
+        'permission_create',
+        'permission_edit',
+        'permission_show',
+        'permission_delete',
+        'permission_access',
+        'user_create',
+        'user_edit',
+        'user_show',
+        'user_delete',
+        'user_access',
+        'debug_access',
+    ];
+
     public function __construct()
     {
-        $this->middleware(['permission:permissions']);
+        // $this->middleware(['permission:permission_access']);
     }
 
     /**
@@ -23,6 +44,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN);
+
         $permissions = Permission::all();
         return view('admin.permissions.index', compact('permissions'));
     }
@@ -34,8 +57,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        $roles = Role::get();
+        abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN);
 
+        $roles = Role::get();
         return view('admin.permissions.create', compact('roles'));
     }
 
@@ -47,6 +71,8 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN);
+
         $this->validate($request, [
             'name'=>"required|max:40|unique:permissions,name,id",
         ]);
@@ -57,10 +83,7 @@ class PermissionController extends Controller
         $permission->syncRoles($roles);
 
         return redirect()->route('admin.permissions.index')
-            ->with(
-                'success',
-                'Permission'. $permission->name.' added!'
-            );
+            ->with('success', "Permissão {$permission->name} adicionado com sucesso.");
     }
 
     /**
@@ -71,6 +94,7 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
+        abort_if(Gate::denies('permission_show'), Response::HTTP_FORBIDDEN);
         return redirect('permissions');
     }
 
@@ -82,6 +106,9 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
+        // abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
+
         $permission = Permission::findOrFail($id);
         $roles = Role::all();
 
@@ -97,6 +124,8 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
+
         $this->validate($request, [
             'name'=>"required|max:40|unique:permissions,name,{$id},id",
         ]);
@@ -108,10 +137,7 @@ class PermissionController extends Controller
         $permission->syncRoles($roles);
 
         return redirect()->route('admin.permissions.index')
-            ->with(
-                'success',
-                'Permission'. $permission->name.' updated!'
-            );
+            ->with('success', "Permissão {$permission->name} editado com sucesso.");
     }
 
     /**
@@ -122,49 +148,20 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN);
+
         $permission = Permission::findOrFail($id);
 
-        // Tornar impossível excluir esta permissão
-        if ($permission->name == "manage users") {
+        // Tornar impossível excluir estas permissões
+        if (in_array($permission->name, $this->permissions_not_removed)) {
             return redirect()->route('admin.permissions.index')
-            ->with(
-                'warning',
-                'Cannot delete this Permission!'
-            );
+            ->with('warning', 'Não é possível excluir esta permissão!');
         }
-        // Tornar impossível excluir esta permissão
-        if ($permission->name == "manage roles") {
-            return redirect()->route('admin.permissions.index')
-            ->with(
-                'warning',
-                'Cannot delete this Permission!'
-            );
-        }
-        // Tornar impossível excluir esta permissão
-        if ($permission->name == "manage permissions") {
-            return redirect()->route('admin.permissions.index')
-            ->with(
-                'warning',
-                'Cannot delete this Permission!'
-            );
-        }
-
-        // Tornar impossível excluir esta permissão
-        if ($permission->name == "manage telescope") {
-            return redirect()->route('admin.permissions.index')
-            ->with(
-                'warning',
-                'Cannot delete this Permission!'
-            );
-        }
-
+        
         $permission->delete();
 
         return redirect()->route('admin.permissions.index')
-            ->with(
-                'success',
-                'Permission deleted!'
-            );
+            ->with('success', "Permissão {$permission->name} excluido com sucesso");
     }
 
     /**
@@ -174,25 +171,24 @@ class PermissionController extends Controller
      */
     public function massDestroy(Request $request)
     {
+        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN);
+
+        // Permission::whereIn('id', request('ids'))->delete();
+
         if ($request->input('ids')) {
             $permissions = Permission::whereIn('id', $request->input('ids'))->get();
 
             foreach ($permissions as $permission) {
-                // Tornar impossível excluir esta permissão
-                if ($permission->name == "manage users") {
-                    continue;
-                }
-                // Tornar impossível excluir esta permissão
-                if ($permission->name == "manage roles") {
-                    continue;
-                }
-                // Tornar impossível excluir esta permissão
-                if ($permission->name == "manage permissions") {
+                // Tornar impossível excluir estas permissões
+                if (in_array($permission->name, $this->permissions_not_removed)) {
                     continue;
                 }
 
                 $permission->delete();
             }
+
+            return redirect()->route('admin.permissions.index')
+            ->with('success', 'Permissões excluídas com sucesso.');
         }
     }
 }

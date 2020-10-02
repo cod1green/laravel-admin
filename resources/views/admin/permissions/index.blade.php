@@ -25,12 +25,14 @@
 
 <section class="content">
     <div class="container-fluid">
+        @can('permission_create')
         <div class="row">
             <div class="col-12 mb-2">
                 <a href="{{ route('admin.permissions.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>
                     @lang('admin.permissions.create')</a>
             </div>
         </div>
+        @endcan
         <div class="row">
             <div class="col-12">
                 <div class="card card-success">
@@ -51,21 +53,28 @@
                             <thead>
                                 <tr>
                                     <th>@lang('admin.permissions')</th>
+                                    @canany(['permission_edit', 'permission_delete'])
                                     <th>@lang('admin.operations')</th>
+                                    @endcanany
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($permissions as $permission)
                                 <tr>
                                     <td>{{ $permission->name }}</td>
+                                    @canany(['permission_edit', 'permission_delete'])
                                     <td>
                                         <div class="form-row">
+                                            @can('permission_edit')
                                             <div class="col-auto">
                                                 <a href="{{ route('admin.permissions.edit', $permission->id) }}"
                                                     class="btn btn-sm btn-warning pull-left">
                                                     <i class="fa fa-edit"></i> @lang('admin.edit')
                                                 </a>
                                             </div>
+                                            @endcan
+
+                                            @can('permission_delete')
                                             <div class="col-auto">
                                                 {!! Form::open([
                                                 'method' => 'DELETE',
@@ -78,8 +87,10 @@
 
                                                 {!! Form::close() !!}
                                             </div>
+                                            @endcan
                                         </div>
                                     </td>
+                                    @endcanany
                                 </tr>
                                 @endforeach
                             </tbody>

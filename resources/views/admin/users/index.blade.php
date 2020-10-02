@@ -24,12 +24,14 @@
 
 <section class="content">
     <div class="container-fluid">
+        @can('user_create')
         <div class="row">
             <div class="col-12 mb-2">
                 <a href="{{ route('admin.users.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i>
                     @lang('admin.users.create')</a>
             </div>
         </div>
+        @endcan
         <div class="row">
             <div class="col-12">
                 <div class="card card-success">
@@ -54,7 +56,9 @@
                                     <th>@lang('admin.created_at')</th>
                                     <th>@lang('admin.user.roles.assign')</th>
                                     <th>@lang('admin.user.permissions.assign')</th>
+                                    @canany(['user_edit', 'user_delete'])
                                     <th>@lang('admin.operations')</th>
+                                    @endcanany
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,11 +70,25 @@
                                     {{-- Retrieve array of roles associated to a user and convert to string --}}
                                     <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
                                     <td>{{ $user->permissions->pluck('name')->implode(', ') }}</td>
+                                    @canany(['user_edit', 'user_delete'])
                                     <td>
                                         <div class="btn-group">
+                                            @can('user_edit')
                                             <a href="{{ route('admin.users.edit', $user->id) }}"
                                                 class="btn btn-sm btn-warning">
                                                 <i class="fas fa-user-edit"></i> @lang('admin.edit')
+                                            </a>
+                                            @endcan
+
+                                            @can('user_delete')
+                                            <a class="btn btn-sm btn-danger" onclick="
+                                                if(confirm(`{{ trans('admin.confirm') }}`)){
+                                                    event.preventDefault();
+                                                    document.getElementById('delete-form-{{ $user->id }}').submit();
+                                                } else {
+                                                    event.preventDefault();
+                                                }">
+                                                <i class="fas fa-user-times"></i> @lang("admin.delete")
                                             </a>
 
                                             <form id="delete-form-{{ $user->id }}"
@@ -79,18 +97,10 @@
                                                 @csrf
                                                 @method("DELETE")
                                             </form>
-
-                                            <a class="btn btn-sm btn-danger" onclick="
-                                            if(confirm(`{{ trans('admin.confirm') }}`)){
-                                                event.preventDefault();
-                                                document.getElementById('delete-form-{{ $user->id }}').submit();
-                                            } else {
-                                                event.preventDefault();
-                                            }">
-                                                <i class="fas fa-user-times"></i> @lang("admin.delete")
-                                            </a>
+                                            @endcan
                                         </div>
                                     </td>
+                                    @endcanany
                                 </tr>
                                 @endforeach
                             </tbody>

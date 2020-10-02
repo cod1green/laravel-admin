@@ -79,7 +79,7 @@ return [
     'middleware' => [
         'web',
         'auth',
-        'permission:debug',
+        'permission:debug_access',
         Authorize::class,
     ],
 

@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Controller;
-
 use Spatie\Permission\Models\Role;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:roles']);
+        // $this->middleware(['permission:role_access']);
     }
 
     /**
@@ -23,6 +25,9 @@ class RoleController extends Controller
      */
     public function index()
     {
+        // abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN);
+        
         $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
     }
@@ -34,6 +39,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN);
+
         $permissions = Permission::all();
         return view('admin.roles.create', compact('permissions'));
     }
@@ -46,6 +53,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN);
+
         $this->validate($request, [
             'name' => 'required|max:40|unique:roles,name,id'
         ]);
@@ -56,15 +65,12 @@ class RoleController extends Controller
             $role->syncPermissions($permissions);
 
             return redirect()->route('admin.roles.index')
-                ->with(
-                    'success',
-                    'Role '. $role->name. ' added!'
-                );
+                ->with('success', "Função {$role->name} adicionado com sucesso.");
         }
 
         return redirect()
             ->back()
-            ->with('error', 'Role '. $role->name.' failured!');
+            ->with('error', "Erro ao cadastrar a Função {$role->name}.");
     }
 
     /**
@@ -75,6 +81,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
+        abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN);
         return redirect('roles');
     }
 
@@ -86,6 +93,8 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN);
+
         $role = Role::findOrFail($id);
         $permissions = Permission::all();
 
@@ -101,6 +110,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN);
+        
         $this->validate($request, [
             'name' => "required|max:40|unique:roles,name,{$id},id",
         ]);
@@ -112,10 +123,7 @@ class RoleController extends Controller
         $role->syncPermissions($permissions);
 
         return redirect()->route('admin.roles.index')
-            ->with(
-                'success',
-                'Role'. $role->name.' updated!'
-            );
+            ->with('success', "Função $role->name editado com sucesso.");
     }
 
     /**
@@ -126,24 +134,20 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN);
+
         $role = Role::findOrFail($id);
 
-        // Torna impossível excluir este papel específico super-admin
+        // Torna impossível excluir este papel específico admin
         if ($role->id == 1) {
             return redirect()->route('admin.roles.index')
-            ->with(
-                'warning',
-                'Cannot delete this Permission!'
-            );
+            ->with('warning', "Não é possível excluir a função {$role->name}.");
         }
 
         $role->delete();
 
         return redirect()->route('admin.roles.index')
-            ->with(
-                'success',
-                'Role deleted!'
-            );
+            ->with('success', "Função {$role->name} excluída com sucesso.");
     }
 
     /**
@@ -153,15 +157,22 @@ class RoleController extends Controller
      */
     public function massDestroy(Request $request)
     {
+        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN);
+
+        // Role::whereIn('id', request('ids'))->delete();
+
         if ($request->input('ids')) {
             $roles = Role::whereIn('id', $request->input('ids'))->get();
 
             foreach ($roles as $role) {
-                // Torna impossível excluir este papel específico super-admin
+                // Torna impossível excluir este papel específico admin
                 if ($role->id != 1) {
                     $role->delete();
                 }
             }
+
+            return redirect()->route('admin.roles.index')
+                ->with('success', 'Funções excluídas com sucesso.');
         }
     }
 }

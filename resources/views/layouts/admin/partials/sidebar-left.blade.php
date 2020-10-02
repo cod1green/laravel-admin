@@ -45,7 +45,7 @@
                     </a>
                 </li>
 
-                @canany(['manage users', 'manage roles', 'manage permissions', 'manage debug'])
+                @canany(['user_access', 'role_access', 'permission_access', 'debug_access'])
                 <!-- <li class="nav-item has-treeview menu-open"> -->
                 <li class="nav-item has-treeview">
                     <!-- <a href="#" class="nav-link active"> -->
@@ -57,7 +57,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @can('manage users')
+                        @can('user_access')
                         <li class="nav-item">
                             <!-- <a href="#" class="nav-link active"> -->
                             <a href="{{ route('admin.users.index') }}" class="nav-link">
@@ -67,7 +67,7 @@
                         </li>
                         @endcan
 
-                        @can('manage roles')
+                        @can('role_access')
                         <li class="nav-item">
                             <a href="{{ route('admin.roles.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-briefcase"></i>
@@ -76,7 +76,7 @@
                         </li>
                         @endcan
 
-                        @can('manage permissions')
+                        @can('permission_access')
                         <li class="nav-item">
                             <a href="{{ route('admin.permissions.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-wrench"></i>
@@ -85,7 +85,7 @@
                         </li>
                         @endcan
 
-                        @can('manage debug')
+                        @can('debug_access')
                         <li class="nav-item">
                             <a href="{{ url(config('admin.prefix') . '/debug') }}" class="nav-link">
                                 <i class="nav-icon fas fa-bug"></i>

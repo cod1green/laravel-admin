@@ -24,12 +24,14 @@
 
 <section class="content">
     <div class="container-fluid">
+        @can('role_create')
         <div class="row">
             <div class="col-12 mb-2">
                 <a href="{{ route('admin.roles.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>
                     @lang('admin.roles.create')</a>
             </div>
         </div>
+        @endcan
         <div class="row">
             <div class="col-12">
                 <div class="card card-success">
@@ -52,7 +54,9 @@
                                 <tr>
                                     <th>@lang('admin.role')</th>
                                     <th>@lang('admin.permissions')</th>
+                                    @canany(['role_edit', 'role_delete'])
                                     <th>@lang('admin.operations')</th>
+                                    @endcanany
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,14 +67,19 @@
                                     {{-- Recuperar a matriz de permissões associadas a uma função e convertê-la em
                                     string --}}
                                     <td>{{ $role->permissions()->pluck('name')->implode(', ') }}</td>
+                                    @canany(['role_edit', 'role_delete'])
                                     <td>
                                         <div class="form-row">
+                                            @can('role_edit')
                                             <div class="col-auto">
                                                 <a href="{{ route('admin.roles.edit', $role->id) }}"
                                                     class="btn btn-sm btn-warning pull-left">
                                                     <i class="fa fa-edit"></i> @lang('admin.edit')
                                                 </a>
                                             </div>
+                                            @endcan
+
+                                            @can('role_delete')
                                             <div class="col-auto">
                                                 {!! Form::open([
                                                 'method' => 'DELETE',
@@ -83,8 +92,10 @@
 
                                                 {!! Form::close() !!}
                                             </div>
+                                            @endcan
                                         </div>
                                     </td>
+                                    @endcanany
                                 </tr>
                                 @endforeach
                             </tbody>
