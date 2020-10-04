@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth'], 'prefix' => config('admin.prefix'), 'as' => 'admin.'], function () {
@@ -48,3 +49,4 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 
 Auth::routes();
+// Auth::routes(['register' => false]);

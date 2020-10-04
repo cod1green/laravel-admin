@@ -9,7 +9,10 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Requests\UpdatePermissionRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\MassDestroyPermissionRequest;
 
 class PermissionController extends Controller
 {
@@ -32,16 +35,6 @@ class PermissionController extends Controller
         'debug_access',
     ];
 
-    public function __construct()
-    {
-        // $this->middleware(['permission:permission_access']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN);
@@ -50,11 +43,6 @@ class PermissionController extends Controller
         return view('admin.permissions.index', compact('permissions'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN);
@@ -63,99 +51,50 @@ class PermissionController extends Controller
         return view('admin.permissions.create', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StorePermissionRequest $request)
     {
-        abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN);
-
-        $this->validate($request, [
-            'name'=>"required|max:40|unique:permissions,name,id",
-        ]);
-
         $permission = Permission::create($request->except('roles'));
 
-        $roles = $request->input('roles') ? $request->input('roles') : [];
-        $permission->syncRoles($roles);
+        $permission->syncRoles($request->input('roles', []));
 
         return redirect()->route('admin.permissions.index')
             ->with('success', "Permissão {$permission->name} adicionado com sucesso.");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Permission $permission)
     {
         abort_if(Gate::denies('permission_show'), Response::HTTP_FORBIDDEN);
-        return redirect('permissions');
+        return view('admin.permissions.show', compact('permission'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
-        // abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
         abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
 
-        $permission = Permission::findOrFail($id);
+        $permission->load('roles');
+
         $roles = Role::all();
 
         return view('admin.permissions.edit', compact('permission', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
-
-        $this->validate($request, [
-            'name'=>"required|max:40|unique:permissions,name,{$id},id",
-        ]);
-
-        $permission = Permission::findOrFail($id);
         $permission->update($request->except('roles'));
-
-        $roles = $request->input('roles') ? $request->input('roles') : [];
-        $permission->syncRoles($roles);
+        $permission->syncRoles($request->input('roles', []));
 
         return redirect()->route('admin.permissions.index')
             ->with('success', "Permissão {$permission->name} editado com sucesso.");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
         abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN);
-
-        $permission = Permission::findOrFail($id);
 
         // Tornar impossível excluir estas permissões
         if (in_array($permission->name, $this->permissions_not_removed)) {
             return redirect()->route('admin.permissions.index')
-            ->with('warning', 'Não é possível excluir esta permissão!');
+                ->with('warning', 'Não é possível excluir esta permissão!');
         }
         
         $permission->delete();
@@ -165,30 +104,26 @@ class PermissionController extends Controller
     }
 
     /**
-     * Delete all selected Permission at once.
+     * Excluir todas as permissões selecionadas de uma vez.
      *
      * @param Request $request
      */
-    public function massDestroy(Request $request)
+    public function massDestroy(MassDestroyPermissionRequest $request)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN);
-
         // Permission::whereIn('id', request('ids'))->delete();
+        
+        $permissions = Permission::whereIn('id', $request->input('ids'))->get();
 
-        if ($request->input('ids')) {
-            $permissions = Permission::whereIn('id', $request->input('ids'))->get();
-
-            foreach ($permissions as $permission) {
-                // Tornar impossível excluir estas permissões
-                if (in_array($permission->name, $this->permissions_not_removed)) {
-                    continue;
-                }
-
-                $permission->delete();
+        foreach ($permissions as $permission) {
+            // Tornar impossível excluir estas permissões
+            if (in_array($permission->name, $this->permissions_not_removed)) {
+                continue;
             }
 
-            return redirect()->route('admin.permissions.index')
-            ->with('success', 'Permissões excluídas com sucesso.');
+            $permission->delete();
         }
+
+        return redirect()->route('admin.permissions.index')
+            ->with('success', 'Permissões excluídas com sucesso.');
     }
 }

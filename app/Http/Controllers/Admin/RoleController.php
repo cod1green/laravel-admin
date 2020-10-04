@@ -8,7 +8,10 @@ use Spatie\Permission\Models\Role;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use Spatie\Permission\Models\Permission;
+use App\Http\Requests\MassDestroyRoleRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
@@ -18,11 +21,6 @@ class RoleController extends Controller
         // $this->middleware(['permission:role_access']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         // abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -31,12 +29,7 @@ class RoleController extends Controller
         $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN);
@@ -45,98 +38,47 @@ class RoleController extends Controller
         return view('admin.roles.create', compact('permissions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN);
-
-        $this->validate($request, [
-            'name' => 'required|max:40|unique:roles,name,id'
-        ]);
-
         $role = Role::create($request->except('permissions'));
-        if ($role) {
-            $permissions = $request->input('permissions') ? $request->input('permissions') : [];
-            $role->syncPermissions($permissions);
+        $role->syncPermissions($request->input('permissions', []));
 
-            return redirect()->route('admin.roles.index')
-                ->with('success', "Função {$role->name} adicionado com sucesso.");
-        }
-
-        return redirect()
-            ->back()
-            ->with('error', "Erro ao cadastrar a Função {$role->name}.");
+        return redirect()->route('admin.roles.index')
+            ->with('success', "Função {$role->name} adicionado com sucesso.");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Role $role)
     {
         abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN);
-        return redirect('roles');
+
+        $role->load('permissions');
+
+        return view('admin.roles.show', compact('role'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Role $role)
     {
         abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN);
 
-        $role = Role::findOrFail($id);
+        $role->load('permissions');
+
         $permissions = Permission::all();
 
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN);
-        
-        $this->validate($request, [
-            'name' => "required|max:40|unique:roles,name,{$id},id",
-        ]);
-
-        $role = Role::findOrFail($id);
         $role->update($request->except('permissions'));
-
-        $permissions = $request->input('permissions') ? $request->input('permissions') : [];
-        $role->syncPermissions($permissions);
+        $role->syncPermissions($request->input('permissions', []));
 
         return redirect()->route('admin.roles.index')
             ->with('success', "Função $role->name editado com sucesso.");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN);
-
-        $role = Role::findOrFail($id);
 
         // Torna impossível excluir este papel específico admin
         if ($role->id == 1) {
@@ -151,15 +93,13 @@ class RoleController extends Controller
     }
 
     /**
-     * Delete all selected Role at once.
+     * Excluir todas as funções selecionadas de uma vez.
      *
      * @param Request $request
      */
-    public function massDestroy(Request $request)
+    public function massDestroy(MassDestroyRoleRequest $request)
     {
         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN);
-
-        // Role::whereIn('id', request('ids'))->delete();
 
         if ($request->input('ids')) {
             $roles = Role::whereIn('id', $request->input('ids'))->get();

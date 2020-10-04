@@ -9,24 +9,19 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Spatie\Permission\Models\Permission;
+use App\Http\Requests\MassDestroyUserRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    private $totalPage = 30;
-
-    public function __construct()
-    {
-        // $this->middleware(['permission:user_access']);
-    }
-
     public function index()
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN);
-
+        
         $users = User::all();
-        // $users = User::paginate($this->totalPage);
 
         return view('admin.users.index', compact('users'));
     }
@@ -41,100 +36,63 @@ class UserController extends Controller
         return view('admin.users.create', compact('roles', 'permissions'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN);
-
-        $this->validate($request, [
-            'name'=>'required|max:120',
-            'email'=>"required|email|unique:users,email,id",
-            'password'=>'required|min:6|confirmed'
-        ]);
-
         $user = User::create($request->except(['roles', 'permissions']));
-        if ($user) {
-            $roles = $request->input('roles') ? $request->input('roles') : [];
-            $user->syncRoles($roles);
-
-            $permissions = $request->input('permissions') ? $request->input('permissions') : [];
-            $user->syncPermissions($permissions);
-
-            return redirect()
-                    ->route('admin.users.index')
-                    ->with('success', "Usuário {$user->name} cadastrado com sucesso.");
-        }
+        $user->syncRoles($request->input('roles', []));
+        $user->syncPermissions($request->input('permissions', []));
 
         return redirect()
-            ->back()
-            ->with('error', "Erro ao cadastrar o Usuário {$user->name}.");
+                ->route('admin.users.index')
+                ->with('success', "Usuário {$user->name} cadastrado com sucesso.");
     }
 
-    public function show($id)
+    public function show(User $user)
     {
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN);
-        return redirect('users');
+        
+        $user->load('roles');
+
+        return view('admin.users.show', compact('user'));
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN);
 
-        $user = User::findOrFail($id);
+        $user->load('roles');
+        $user->load('permissions');
+
         $roles = Role::get();
         $permissions = Permission::all();
 
         return view('admin.users.edit', compact('user', 'roles', 'permissions'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN);
-
-        $this->validate($request, [
-            'name'=>'required|max:120',
-            'email'=>"required|email|unique:users,email,{$id},id",
-            'password'=>'nullable|min:6|confirmed'
-        ]);
-
         // para não alterar a senha se estiver vazia
         if (is_null($request['password'])) {
             unset($request['password']);
         }
 
-        $user = User::findOrFail($id);
-
-        $update = $user->update($request->except(['roles', 'permissions']));
-        if ($update) {
-            $roles = $request->input('roles') ? $request->input('roles') : [];
-            $user->syncRoles($roles);
-
-            $permissions = $request->input('permissions') ? $request->input('permissions') : [];
-            $user->syncPermissions($permissions);
-
-            return redirect()
-                    ->route('admin.users.index')
-                    ->with('success', "Usuário {$user->name} editado com sucesso.");
-        }
+        $user->update($request->except(['roles', 'permissions']));
+        $user->syncRoles($request->input('roles', []));
+        $user->syncPermissions($request->input('permissions', []));
 
         return redirect()
-                ->back()
-                ->with('error', "Erro ao editar o Usuário {$user->name}.");
+            ->route('admin.users.index')
+            ->with('success', "Usuário {$user->name} editado com sucesso.");
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN);
 
-        $user = User::findOrFail($id);
-        $delete = $user->delete();
-        if ($delete) {
-            return redirect()->route('admin.users.index')
-                ->with('success', "Usuário {$user->name} excluído com sucesso.");
-        }
-
-        return redirect()
-            ->back()
-            ->with('error', "Erro ao excluir o Usuário {$user->name}.");
+        $user->delete();
+        
+        return redirect()->route('admin.users.index')
+            ->with('success', "Usuário {$user->name} excluído com sucesso.");
     }
 
     /**
@@ -142,7 +100,7 @@ class UserController extends Controller
      *
      * @param Request $request
      */
-    public function massDestroy(Request $request)
+    public function massDestroy(MassDestroyUserRequest $request)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN);
         
