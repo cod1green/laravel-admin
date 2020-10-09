@@ -28,25 +28,26 @@ class TokenApiController extends Controller
                 'email' => ['As credenciais fornecidas estão incorretas.']
             ]);
         }
-    
-        $token = $user->createToken($request->device_name)->plainTextToken;
-    
-        $reponse = [
-            'user' => $user,
-            'token' => $token,
+        
+        $data = [
+            // 'user' => $user,
+            'access_token' => $user->createToken($request->device_name)->plainTextToken,
+            'token_type' => 'bearer',
+            'expires_in' => config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null
         ];
 
-        return response($reponse, Response::HTTP_CREATED);
+        return response()->json(compact('data'))->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function user(Request $request)
-    {        
-        $reponse = [
-            'user' => $request->user(),
-            'token' => $request->bearerToken()
+    {   
+        $data = [
+            // 'user' => $request->user(),
+            'access_token' => $request->bearerToken(),
+            'token_type' => 'bearer',
+            'expires_in' => config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null 
         ];
-
-        return response($reponse, Response::HTTP_OK);
+        return response()->json(compact('data'))->setStatusCode(Response::HTTP_OK);
     }
 
     public function logout(Request $request)

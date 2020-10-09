@@ -20,9 +20,8 @@ class SpaApiController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            // return response()->json(Auth::user(), 200);
-
-            return response(Auth::user(), Response::HTTP_OK);
+            $data = Auth::user();
+            return response()->json(compact('data'))->setStatusCode(Response::HTTP_OK);
         }
 
         throw ValidationException::withMessages([
@@ -32,12 +31,13 @@ class SpaApiController extends Controller
 
     public function user()
     {
-        return response(Auth::user(), Response::HTTP_OK);
+        $data = Auth::user();
+        return response()->json(compact('data'))->setStatusCode(Response::HTTP_OK);
     }
 
     public function logout()
     {
         Auth::logout();
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response()->noContent();
     }
 }
