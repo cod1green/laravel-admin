@@ -54,7 +54,6 @@ class UserApiController extends Controller
         return (new UserResource($user))
             ->response()
             ->setStatusCode(Response::HTTP_ACCEPTED);
-        
     }
 
     public function destroy(User $user)
