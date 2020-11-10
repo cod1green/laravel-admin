@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\UpdateProfileformRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted;
 
 class ProfileController extends Controller
 {
@@ -25,7 +26,7 @@ class ProfileController extends Controller
         return view('admin.profile.edit');
     }
 
-    public function update(UpdateProfileformRequest $request)
+    public function update(UpdateProfileRequest $request)
     {
         $user = auth()->user();
 
