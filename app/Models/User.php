@@ -27,6 +27,8 @@ class User extends Authenticatable implements HasMedia
         'name', 'email', 'password', 'avatar_id',
     ];
 
+    protected $appends = ['registered'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -44,6 +46,26 @@ class User extends Authenticatable implements HasMedia
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeToday($query)
+    {
+        return $query->where('created_at', today());
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
+
+    public function scopeInactive($query)
+    {
+        return $query->where('active', 0);
+    }
+
+    public function getRegisteredAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
 
     /**
      * Hash password

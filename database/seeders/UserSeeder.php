@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'password'  		=> bcrypt('12345678'),
             'email_verified_at' => now(),
             'remember_token' 	=> Str::random(10),
+            'active'            => true,
         ])->assignRole(1);
 
         User::create([
@@ -29,6 +30,7 @@ class UserSeeder extends Seeder
             'password'  		=> bcrypt('12345678'),
             'email_verified_at' => now(),
             'remember_token' 	=> Str::random(10),
+            'active'            => false,
         ]);
     }
 }
