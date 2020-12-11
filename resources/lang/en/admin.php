@@ -10,8 +10,8 @@ return [
     'created_at' => 'Created at',
     'password' => 'Password',
     'current_password' => 'Current Password',
-    'new_password' => 'Nova senha',
-    'password_confirmation' => 'Confirme a senha',
+    'new_password' => 'New password',
+    'password_confirmation' => 'Confirm password',
     'image' => 'Imagem',
 
     'operations' => 'Operations',
