@@ -4,19 +4,20 @@ set -e
 echo "Deploying application ..."
 
 # Enter maintenance mode
-(php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.') || true
+
+docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && (php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.')" || true
     # Update codebase
-    git fetch origin deploy
-    git reset --hard origin/deploy
+    docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && git fetch origin deploy"
+    docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && git reset --hard origin/deploy"
     # Install dependencies based on lock file
-    composer install --no-interaction --prefer-dist --optimize-autoloader
+    docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && composer install --no-interaction --prefer-dist --optimize-autoloader"
     # Migrate database
-    # php artisan migrate --force (comentei aqui para não ter que lidar com database)
+    docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && php artisan migrate --force"
     # Clear cache
-    # php artisan optimize (comentei aqui para não ter que lidar com route closures)
+    docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && php artisan optimize"
     # Reload PHP to update opcache
     # echo "" | sudo -S service php7.4-fpm reload
 # Exit maintenance mode
-php artisan up
+docker exec -it laradock_workspace_1 /bin/bash -c "cd cod1green && php artisan up"
 
 echo "Application deployed!"
