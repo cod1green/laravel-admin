@@ -36,7 +36,7 @@ jobs:
           username: code
           host: '134.209.173.56'
           key: ${{ secrets.SSH_PASSWORD }}
-          script: 'cd ~/cod1green && sh server_deploy.sh'
+          script: 'cd ~/ && ./server_deploy.sh'
           #script: 'cd /var/www/cod1green && sh server_deploy.sh'  
 
   remove-branch:
