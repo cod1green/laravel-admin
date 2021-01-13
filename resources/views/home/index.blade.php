@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h1><i class='fa fa-wrench'></i> Em construção</h1>
+                    <h1><i class='fa fa-wrench'></i> Em construção.</h1>
                 </div>
 
                 <div class="card-body">
@@ -31,15 +31,17 @@
 
 @push('css')
 <style>
-    body, html {
+    body,
+    html {
         height: 100%;
         margin: 0;
     }
+
     body {
         background-image: url('/svg/construction.svg');
         background-position: center;
         background-repeat: no-repeat;
-        background-size:auto 100%;
+        background-size: auto 100%;
     }
 
     main .container {
