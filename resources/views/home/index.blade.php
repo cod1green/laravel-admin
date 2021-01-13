@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h1><i class='fa fa-wrench'></i> Cod1green em construção.</h1>
+                    <h1><i class='fa fa-wrench'></i> Em construção.</h1>
                 </div>
 
                 <div class="card-body">
