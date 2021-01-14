@@ -10,15 +10,6 @@ jobs:
   laravel-test:
     name: Laravel test
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [7.3, 7.4]
-        laravel: [^8.0]
-
-    name: P${{ matrix.php }} - L${{ matrix.laravel }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -28,10 +19,10 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip
+          php-version: '7.4'
+          extensions: dom, curl, libxml, mbstring, zip, intl
           ini-values: post_max_size=256M, max_execution_time=180
-          tools: composer:v2, php-cs-fixer, phpunit
+          tools: php-cs-fixer, phpunit, composer:v2
           coverage: none    
       
       - name: Copiar .env
