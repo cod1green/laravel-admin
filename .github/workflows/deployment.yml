@@ -8,8 +8,17 @@ jobs:
   laravel-test:
     name: Laravel test
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.3, 7.4]
+        laravel: [^8.0]
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.PUSH_TOKEN }}
@@ -17,11 +26,11 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
-          extensions: mbstring, intl
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip
           ini-values: post_max_size=256M, max_execution_time=180
-          coverage: xdebug    
-          tools: php-cs-fixer, phpunit
+          tools: composer:v2, php-cs-fixer, phpunit
+          coverage: none    
       
       - name: Copiar .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -44,7 +53,7 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --verbose
       
   build-js-css:
     name: Compilar JS/CSS
