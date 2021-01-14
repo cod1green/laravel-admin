@@ -11,7 +11,7 @@ jobs:
     name: Laravel test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.PUSH_TOKEN }}
@@ -20,10 +20,10 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: mbstring, intl
+          extensions: dom, curl, libxml, mbstring, zip, intl
           ini-values: post_max_size=256M, max_execution_time=180
-          coverage: xdebug    
-          tools: php-cs-fixer, phpunit
+          tools: php-cs-fixer, phpunit, composer:v2
+          coverage: none    
       
       - name: Copiar .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -46,5 +46,5 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --verbose
       
