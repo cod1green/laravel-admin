@@ -1,14 +1,12 @@
-name: Laravel Teste
+name: Executar Teste
 
 on:
   push:
-    branches: [ master, develop ]
   pull_request:
-    branches: [ master, develop ]
 
 jobs:
-  laravel-test:
-    name: Laravel test
+  executar-teste:
+    name: Executar teste
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

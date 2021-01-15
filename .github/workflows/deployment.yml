@@ -5,8 +5,8 @@ on:
     branches: [production]
 
 jobs:
-  laravel-test:
-    name: Laravel test
+  executar-teste:
+    name: Executar teste
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -49,7 +49,7 @@ jobs:
   build-js-css:
     name: Compilar JS/CSS
     runs-on: ubuntu-latest
-    needs: [laravel-test]
+    needs: [executar-teste]
     steps:
       - uses: actions/checkout@v2
         with:
