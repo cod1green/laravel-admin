@@ -2,11 +2,9 @@ name: Executar Teste
 
 on:
   push:
-    branches-ignore:
-      [production]
+    branches-ignore: [production, deploy]
   pull_request:
-    branches-ignore:
-      [production]
+    branches-ignore: [production, deploy]
 
 jobs:
   executar-teste:
