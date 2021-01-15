@@ -75,9 +75,10 @@ jobs:
       - name: Deploy para o Servidor de Produção
         uses: appleboy/ssh-action@master
         with:
-          username: code
-          host: '134.209.173.56'
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.PORT }}
           script: |
             cd ~/
             ./server_deploy.sh
