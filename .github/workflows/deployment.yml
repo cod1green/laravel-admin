@@ -80,7 +80,7 @@ jobs:
           key: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ~/
-            ./server_deploy.sh'
+            ./server_deploy.sh
 
   remover-branch:
     name: Remover a branch deploy
