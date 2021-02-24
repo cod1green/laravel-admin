@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "9f09aef6-b21b-4a0f-8f72-5adba334f56d",
-		"name": "Cod1green",
+		"_postman_id": "a20589f7-cbed-403f-8f1d-a64c7cb5e42d",
+		"name": "Laravel Admin",
+		"description": "Documentação das API's do projeto Laravel Admin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -42,9 +43,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/spa/login",
+									"raw": "{{baseUrl}}/api/v1/spa/login",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -52,7 +53,8 @@
 										"spa",
 										"login"
 									]
-								}
+								},
+								"description": "Rota para login via sessão"
 							},
 							"response": []
 						},
@@ -75,6 +77,11 @@
 										"key": "X-XSRF-TOKEN",
 										"value": "{{xsrf-cookie}}",
 										"type": "text"
+									},
+									{
+										"key": "Referer",
+										"value": "{{baseUrl}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -82,9 +89,9 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/spa/logout",
+									"raw": "{{baseUrl}}/api/v1/spa/logout",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -92,7 +99,8 @@
 										"spa",
 										"logout"
 									]
-								}
+								},
+								"description": "Rota para logout da sessão"
 							},
 							"response": []
 						},
@@ -113,14 +121,19 @@
 									},
 									{
 										"key": "Referer",
-										"value": "{{url}}",
+										"value": "{{baseUrl}}",
+										"type": "text"
+									},
+									{
+										"key": "X-XSRF-TOKEN",
+										"value": "{{xsrf-cookie}}",
 										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/v1/spa/user",
+									"raw": "{{baseUrl}}/api/v1/spa/user",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -128,9 +141,34 @@
 										"spa",
 										"user"
 									]
-								}
+								},
+								"description": "Rota para recuperar o usuário da sessão"
 							},
 							"response": []
+						}
+					],
+					"description": "Autenticação via SPA: Single Page Aplicattion",
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -139,6 +177,19 @@
 					"item": [
 						{
 							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"token\", jsonData.data.access_token);\r",
+											"pm.environment.set(\"token_type\", jsonData.data.token_type);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -158,9 +209,9 @@
 									"raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"12345678\",\n  \"device_name\": \"mobile\"\n}"
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/token/login",
+									"raw": "{{baseUrl}}/api/v1/token/login",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -168,23 +219,14 @@
 										"token",
 										"login"
 									]
-								}
+								},
+								"description": "Rota para login e gerar o token de acesso"
 							},
 							"response": []
 						},
 						{
 							"name": "Logout",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "20|7JmOMNHPxwEZRIluXKx7lLFn7cdDQTb9H2jEfEwf",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [
 									{
@@ -198,14 +240,10 @@
 										"value": "application/json"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "{{url}}/api/v1/token/logout",
+									"raw": "{{baseUrl}}/api/v1/token/logout",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -213,23 +251,14 @@
 										"token",
 										"logout"
 									]
-								}
+								},
+								"description": "Rota para logout e deletar o token"
 							},
 							"response": []
 						},
 						{
 							"name": "Revoke all",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "19|AG3YyI3DoPs6vm6Vqx6lzcl1kImb8a01zC2bftQV",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [
 									{
@@ -248,9 +277,9 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{url}}/api/v1/token/revoke-all",
+									"raw": "{{baseUrl}}/api/v1/token/revoke-all",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -258,23 +287,14 @@
 										"token",
 										"revoke-all"
 									]
-								}
+								},
+								"description": "Rota para deletar todos os tokens do usuário"
 							},
 							"response": []
 						},
 						{
 							"name": "Usuario",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "1|42Q7i4ux21qQg5JiQw1G0a9cHicIQGeikBZ2j4tT",
-											"type": "string"
-										}
-									]
-								},
 								"method": "GET",
 								"header": [
 									{
@@ -289,9 +309,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/v1/token/user",
+									"raw": "{{baseUrl}}/api/v1/token/user",
 									"host": [
-										"{{url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -299,11 +319,34 @@
 										"token",
 										"user"
 									]
-								}
+								},
+								"description": "Rota para recuperar o usuário do token"
 							},
 							"response": []
 						}
-					]
+					],
+					"description": "Autenticação via token"
+				}
+			],
+			"description": "Modulo de Autenticação",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -313,16 +356,6 @@
 				{
 					"name": "Listar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|p1vPDhRfmdGYemHutJWMRmWphG8eRAl853wBozfo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -337,32 +370,23 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/v1/users",
+							"raw": "{{baseUrl}}/api/v1/users",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"users"
 							]
-						}
+						},
+						"description": "Rota para listar todos os usuários"
 					},
 					"response": []
 				},
 				{
 					"name": "Exibir",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "31|e8rquEFsWBc56P5wJpYJohJ6kEncwqsBkRfsarWb",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -377,9 +401,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/v1/users/1",
+							"raw": "{{baseUrl}}/api/v1/users/1",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -387,23 +411,14 @@
 								"users",
 								"1"
 							]
-						}
+						},
+						"description": "Rota para recuperar o usuário pelo id"
 					},
 					"response": []
 				},
 				{
 					"name": "Cadastrar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -414,8 +429,7 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
-								"type": "text",
-								"disabled": true
+								"type": "text"
 							}
 						],
 						"body": {
@@ -428,32 +442,23 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/users",
+							"raw": "{{baseUrl}}/api/v1/users",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"users"
 							]
-						}
+						},
+						"description": "Rota para cadastrar o usuário"
 					},
 					"response": []
 				},
 				{
 					"name": "Editar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [
 							{
@@ -473,9 +478,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/users/2",
+							"raw": "{{baseUrl}}/api/v1/users/2",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -484,23 +489,13 @@
 								"2"
 							]
 						},
-						"description": "Atualizar um produto"
+						"description": "Rota para atualizar o usuário pelo id"
 					},
 					"response": []
 				},
 				{
 					"name": "Deletar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -515,14 +510,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "{{url}}/api/v1/users/2",
+							"raw": "{{baseUrl}}/api/v1/users/2",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -531,26 +522,12 @@
 								"2"
 							]
 						},
-						"description": "Atualizar um produto"
+						"description": "Rota para deletar o usuário pelo id"
 					},
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "password",
-						"value": "{{token}}",
-						"type": "string"
-					},
-					{
-						"key": "token",
-						"value": "8|ICrc2qFfNbHigkNyvPZZAWUR3o3VQUoh3xficSng",
-						"type": "string"
-					}
-				]
-			},
+			"description": "Modulo de gerenciamento de usuários",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -578,16 +555,6 @@
 				{
 					"name": "Lista",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|42Q7i4ux21qQg5JiQw1G0a9cHicIQGeikBZ2j4tT",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -602,32 +569,23 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/v1/roles",
+							"raw": "{{baseUrl}}/api/v1/roles",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"roles"
 							]
-						}
+						},
+						"description": "Rota para listar todas as funções"
 					},
 					"response": []
 				},
 				{
 					"name": "Exibir",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "8|ICrc2qFfNbHigkNyvPZZAWUR3o3VQUoh3xficSng",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -642,9 +600,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/v1/roles/2",
+							"raw": "{{baseUrl}}/api/v1/roles/2",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -652,23 +610,14 @@
 								"roles",
 								"2"
 							]
-						}
+						},
+						"description": "Rota para recuperar a função pelo id"
 					},
 					"response": []
 				},
 				{
 					"name": "Cadastrar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|p1vPDhRfmdGYemHutJWMRmWphG8eRAl853wBozfo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -679,8 +628,7 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
-								"type": "text",
-								"disabled": true
+								"type": "text"
 							}
 						],
 						"body": {
@@ -693,32 +641,23 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/roles",
+							"raw": "{{baseUrl}}/api/v1/roles",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"roles"
 							]
-						}
+						},
+						"description": "Rota para cadastrar a função"
 					},
 					"response": []
 				},
 				{
 					"name": "Editar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|p1vPDhRfmdGYemHutJWMRmWphG8eRAl853wBozfo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [
 							{
@@ -738,9 +677,9 @@
 							"raw": "{\r\n    \"name\": \"gerente-2\",\r\n    \"guard_name\": \"web\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/roles/2",
+							"raw": "{{baseUrl}}/api/v1/roles/2",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -749,23 +688,13 @@
 								"2"
 							]
 						},
-						"description": "Atualizar um produto"
+						"description": "Rota para atualizar a função pelo id"
 					},
 					"response": []
 				},
 				{
 					"name": "Deletar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|p1vPDhRfmdGYemHutJWMRmWphG8eRAl853wBozfo",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -785,9 +714,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/roles/2",
+							"raw": "{{baseUrl}}/api/v1/roles/2",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -796,21 +725,12 @@
 								"2"
 							]
 						},
-						"description": "Atualizar um produto"
+						"description": "Rota para deletar a função pelo id"
 					},
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "8|ICrc2qFfNbHigkNyvPZZAWUR3o3VQUoh3xficSng",
-						"type": "string"
-					}
-				]
-			},
+			"description": "Modulo de gerenciamento de funções",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -838,16 +758,6 @@
 				{
 					"name": "Lista",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|42Q7i4ux21qQg5JiQw1G0a9cHicIQGeikBZ2j4tT",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -862,32 +772,23 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/v1/permissions",
+							"raw": "{{baseUrl}}/api/v1/permissions",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"permissions"
 							]
-						}
+						},
+						"description": "Rota para listar todas as permissões"
 					},
 					"response": []
 				},
 				{
 					"name": "Exibir",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -902,9 +803,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/v1/permissions/2",
+							"raw": "{{baseUrl}}/api/v1/permissions/2",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -912,23 +813,14 @@
 								"permissions",
 								"2"
 							]
-						}
+						},
+						"description": "Rota para recuperar a permissão pelo id"
 					},
 					"response": []
 				},
 				{
 					"name": "Cadastrar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -939,8 +831,7 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
-								"type": "text",
-								"disabled": true
+								"type": "text"
 							}
 						],
 						"body": {
@@ -953,32 +844,23 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/permissions",
+							"raw": "{{baseUrl}}/api/v1/permissions",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"permissions"
 							]
-						}
+						},
+						"description": "Rota para cadastrar a permissão"
 					},
 					"response": []
 				},
 				{
 					"name": "Editar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [
 							{
@@ -998,9 +880,9 @@
 							"raw": "{\r\n    \"name\": \"teste_edit_alterado\",\r\n    \"guard_name\": \"web\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/permissions/17",
+							"raw": "{{baseUrl}}/api/v1/permissions/17",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -1009,23 +891,13 @@
 								"17"
 							]
 						},
-						"description": "Atualizar um produto"
+						"description": "Rota para atualizar a permissão pelo id"
 					},
 					"response": []
 				},
 				{
 					"name": "Deletar",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "9|8st9DrTARIRcxC4KwfL5X3gwrL7E0fNFyh41qJtn",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -1040,14 +912,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "{{url}}/api/v1/permissions/17",
+							"raw": "{{baseUrl}}/api/v1/permissions/17",
 							"host": [
-								"{{url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -1056,21 +924,12 @@
 								"17"
 							]
 						},
-						"description": "Atualizar um produto"
+						"description": "Rota para deletar a permissão pelo id"
 					},
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "8|ICrc2qFfNbHigkNyvPZZAWUR3o3VQUoh3xficSng",
-						"type": "string"
-					}
-				]
-			},
+			"description": "Modulo de gerenciamento de permissões",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1093,6 +952,16 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
