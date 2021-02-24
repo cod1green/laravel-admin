@@ -20,19 +20,19 @@ class TokenApiController extends Controller
             'password'      => 'required',
             'device_name'   => 'required',
         ]);
-    
+
         $user = User::where('email', $request->email)->first();
-    
+
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['As credenciais fornecidas estão incorretas.']
             ]);
         }
-        
+
         $data = [
             // 'user' => $user,
             'access_token' => $user->createToken($request->device_name)->plainTextToken,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null
         ];
 
@@ -40,12 +40,12 @@ class TokenApiController extends Controller
     }
 
     public function user(Request $request)
-    {   
+    {
         $data = [
             // 'user' => $request->user(),
             'access_token' => $request->bearerToken(),
-            'token_type' => 'bearer',
-            'expires_in' => config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null 
+            'token_type' => 'Bearer',
+            'expires_in' => config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null
         ];
         return response()->json(compact('data'))->setStatusCode(Response::HTTP_OK);
     }
