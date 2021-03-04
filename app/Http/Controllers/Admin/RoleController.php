@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
 use Spatie\Permission\Models\Role;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreRoleRequest;
@@ -25,11 +23,11 @@ class RoleController extends Controller
     {
         // abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN);
-        
+
         $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
     }
-    
+
     public function create()
     {
         abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN);

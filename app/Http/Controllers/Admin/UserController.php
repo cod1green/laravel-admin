@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
-
 use Illuminate\Http\Request;
-
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -20,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN);
-        
+
         $users = User::all();
 
         return view('admin.users.index', compact('users'));
@@ -50,7 +48,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN);
-        
+
         $user->load('roles');
 
         return view('admin.users.show', compact('user'));
@@ -90,7 +88,7 @@ class UserController extends Controller
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN);
 
         $user->delete();
-        
+
         return redirect()->route('admin.users.index')
             ->with('success', "Usuário {$user->name} excluído com sucesso.");
     }
@@ -103,7 +101,7 @@ class UserController extends Controller
     public function massDestroy(MassDestroyUserRequest $request)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN);
-        
+
         if ($request->input('ids')) {
             $users = User::whereIn('id', $request->input('ids'))->get();
 

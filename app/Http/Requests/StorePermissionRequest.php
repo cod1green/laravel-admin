@@ -27,7 +27,7 @@ class StorePermissionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> ['required', 'max:40', 'unique:permissions,name,id'],
+            'name' => ['required', 'max:40', 'unique:permissions,name,id'],
         ];
     }
 }

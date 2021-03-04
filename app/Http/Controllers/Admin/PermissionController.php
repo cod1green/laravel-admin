@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
 use Spatie\Permission\Models\Role;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
@@ -96,7 +94,7 @@ class PermissionController extends Controller
             return redirect()->route('admin.permissions.index')
                 ->with('warning', 'Não é possível excluir esta permissão!');
         }
-        
+
         $permission->delete();
 
         return redirect()->route('admin.permissions.index')
@@ -111,7 +109,7 @@ class PermissionController extends Controller
     public function massDestroy(MassDestroyPermissionRequest $request)
     {
         // Permission::whereIn('id', request('ids'))->delete();
-        
+
         $permissions = Permission::whereIn('id', $request->input('ids'))->get();
 
         foreach ($permissions as $permission) {
