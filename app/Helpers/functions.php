@@ -233,25 +233,25 @@ if (!function_exists('telefoneComMascara')) {
     function telefoneComMascara($telefone)
     {
         switch (strlen($telefone)) {
-        case 8:
-            $a = substr($telefone, 0, 4);
-            $b = substr($telefone, 4);
+            case 8:
+                $a = substr($telefone, 0, 4);
+                $b = substr($telefone, 4);
 
-            $telefone = '(11) ' . $a . '-' . $b;
+                $telefone = '(11) ' . $a . '-' . $b;
 
-            break;
-        case 9:
-            $a = substr($telefone, 0, 4);
-            $b = substr($telefone, 4);
+                break;
+            case 9:
+                $a = substr($telefone, 0, 4);
+                $b = substr($telefone, 4);
 
-            $telefone = '(11) ' . $a . '-' . $b;
+                $telefone = '(11) ' . $a . '-' . $b;
 
-            break;
-        case 0:
-            $telefone = '(00) 0000-0000';
+                break;
+            case 0:
+                $telefone = '(00) 0000-0000';
 
-            break;
-    }
+                break;
+        }
 
         return $telefone;
     }
@@ -546,13 +546,13 @@ if (!function_exists('array_sort')) {
             }
 
             switch ($order) {
-            case SORT_ASC:
-                asort($sortable_array);
-                break;
-            case SORT_DESC:
-                arsort($sortable_array);
-                break;
-        }
+                case SORT_ASC:
+                    asort($sortable_array);
+                    break;
+                case SORT_DESC:
+                    arsort($sortable_array);
+                    break;
+            }
 
             foreach ($sortable_array as $k => $v) {
                 $new_array[$k] = $array[$k];

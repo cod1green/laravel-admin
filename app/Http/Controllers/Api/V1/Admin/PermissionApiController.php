@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use Illuminate\Http\Request;
-
 use Spatie\Permission\Models\Role;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
@@ -45,7 +43,7 @@ class PermissionApiController extends Controller
     {
         $permission = Permission::create($request->except('roles'));
         $permission->syncRoles($request->input('roles', []));
-        
+
         return (new PermissionResource($permission))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -75,7 +73,7 @@ class PermissionApiController extends Controller
         if (in_array($permission->name, $this->permissions_not_removed)) {
             // 'Não é possível excluir esta permissão!'
         }
-        
+
         $permission->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
