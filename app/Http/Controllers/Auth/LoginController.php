@@ -41,6 +41,13 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        Auth::logoutOtherDevices($request->password);
+        if (!$user->active) {
+            Auth::logout();
+            return redirect('/')->withError(trans('admin.user.inactive'));
+        }
+
+        if (env('SINGLE_ACCESS', false)) {
+            Auth::logoutOtherDevices($request->password);
+        }
     }
 }

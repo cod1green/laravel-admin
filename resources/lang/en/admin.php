@@ -29,6 +29,7 @@ return [
     'users.list' => 'User list',
     'user.roles.assign' => 'attributed roles',
     'user.permissions.assign' => 'attributed permissions',
+    'user.inactive' => 'Account disabled, contact Administrator',
 
     'role' => 'Role',
     'roles' => 'Roles',

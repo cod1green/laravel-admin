@@ -29,6 +29,7 @@ return [
     'users.list' => 'Lista de usuários',
     'user.roles.assign' => 'Funções atribuídas',
     'user.permissions.assign' => 'Permissões atribuídas',
+    'user.inactive' => 'Conta desativada, entre em contato com o Administrador',
 
     'role' => 'Função',
     'roles' => 'Funções',
