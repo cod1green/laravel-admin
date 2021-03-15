@@ -50,5 +50,4 @@ Route::middleware(['verified'])->group(function () {
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 
-Auth::routes(['verify' => true]);
-// Auth::routes(['register' => false]);
+Auth::routes(['register' => true, 'verify' => true]);

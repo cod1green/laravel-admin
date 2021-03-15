@@ -969,7 +969,7 @@
 				"type": "text/javascript",
 				"exec": [
 					"pm.sendRequest({",
-					"    url: 'https://cod1green.com.br/sanctum/csrf-cookie',",
+					"    url: pm.environment.get('baseUrl') + '/sanctum/csrf-cookie',",
 					"    method: 'GET'",
 					"}, function (error, response, {cookies}) {",
 					"    if (!error) {",
