@@ -1,4 +1,11 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/vendor/admin-lte/README.md": "/vendor/admin-lte/README.md",
+    "/vendor/admin-lte/composer.json": "/vendor/admin-lte/composer.json",
+    "/vendor/admin-lte/index.html": "/vendor/admin-lte/index.html",
+    "/vendor/admin-lte/index2.html": "/vendor/admin-lte/index2.html",
+    "/vendor/admin-lte/index3.html": "/vendor/admin-lte/index3.html",
+    "/vendor/admin-lte/package.json": "/vendor/admin-lte/package.json",
+    "/vendor/admin-lte/starter.html": "/vendor/admin-lte/starter.html"
 }
