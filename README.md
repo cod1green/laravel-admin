@@ -9,4 +9,4 @@
 
 ## Laravel Admin
 
-Esse é um projeto Laravel Admin
+Esse é um projeto Laravel Admin.
