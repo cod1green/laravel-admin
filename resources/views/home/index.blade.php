@@ -1,29 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Home')
+
 @section('content')
 
 <div class="container">
     @include('includes.alerts')
 
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h1><i class='fa fa-wrench'></i> Em Construção...</h1>
-                </div>
-
-                <div class="card-body">
-                    <h4><b>Usuários para teste</b></h4>
-                    <hr>
-                    <h5>ADMIN</h5>
-                    <h5><b>Usuario:</b> admin@admin.com</h5>
-                    <h5><b>Senha:</b> 12345678</h5>
-                    <hr>
-                    <h5>USER</h5>
-                    <h5><b>Usuario:</b> user@user.com</h5>
-                    <h5><b>Senha:</b> 12345678</h5>
-                </div>
-            </div>
+        <div class="col-md-12 text-center">
+            <h1>Em construção...</h1>
         </div>
     </div>
 </div>
@@ -42,12 +27,6 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: auto 100%;
-    }
-
-    main .container {
-        width: 500px;
-        opacity: 0.8;
-        filter: alpha(opacity=80);
     }
 </style>
 @endpush
