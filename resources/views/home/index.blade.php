@@ -8,7 +8,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1>Em construção...</h1>
+            <h1>Em contrução, aguarde novidades ...</h1>
         </div>
     </div>
 </div>
