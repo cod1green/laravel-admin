@@ -187,6 +187,8 @@ return [
         // PACKAGE LARAVEL DEBUGBAR
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        // PACKAGE DROPBOX DRIVE
+        BC\Laravel\DropboxDriver\ServiceProvider::class
     ],
 
     /*
