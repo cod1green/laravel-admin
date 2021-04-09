@@ -29,6 +29,7 @@ return [
                 'exclude' => [
                     base_path('vendor'),
                     base_path('node_modules'),
+                    storage_path('app/backups'),
                 ],
 
                 /*
@@ -116,7 +117,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'local',
+                'backup',
                 'dropbox',
             ],
         ],
@@ -124,7 +125,7 @@ return [
         /*
          * The directory where the temporary files will be stored.
          */
-        'temporary_directory' => storage_path('app/backup-temp'),
+        'temporary_directory' => storage_path('app/backups/backup-temp'),
 
         /*
          * The password to be used for archive encryption.
@@ -199,7 +200,7 @@ return [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
             'disks' => [
-                'local',
+                'backup',
                 'dropbox',
             ],
             'health_checks' => [
