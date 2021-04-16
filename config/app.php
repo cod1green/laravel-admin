@@ -188,7 +188,10 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
 
         // PACKAGE DROPBOX DRIVE
-        BC\Laravel\DropboxDriver\ServiceProvider::class
+        BC\Laravel\DropboxDriver\ServiceProvider::class,
+
+        // PACKAGE GOOGLE DRIVE
+        App\Providers\GoogleDriveServiceProvider::class,
     ],
 
     /*
