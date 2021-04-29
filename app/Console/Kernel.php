@@ -28,9 +28,14 @@ class Kernel extends ConsoleKernel
         // $schedule->command('telescope:prune')->daily(); // 24 horas
         $schedule->command('telescope:prune --hours=48')->daily(); // 48 horas
 
-        // Efetuar backup diariamente
+        // limpar os backups artigos
         $schedule->command('backup:clean')->daily()->at('01:00');
-        $schedule->command('backup:run')->daily()->at('01:30');
+
+        // backup diario somente do banco de dados
+        $schedule->command('backup:run --only-db')->daily()->at('01:30');
+
+        // backup semanal de arquivos e banco de dados todos os domingos as 02:00
+        $schedule->command('backup:run')->weekly()->sundays()->at('02:00');
     }
 
     /**
