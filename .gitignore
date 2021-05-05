@@ -17,6 +17,8 @@ yarn-error.log
 
 # public files
 /public/vendor/admin-lte
+/public/vendor/telescope
+/public/vendor/livewire
 /public/css
 /public/js
 /public/fonts

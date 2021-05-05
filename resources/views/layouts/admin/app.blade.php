@@ -21,6 +21,8 @@
 
     @yield('css')
     @stack('css')
+
+    @livewireStyles
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -40,6 +42,8 @@
 
     @yield('js')
     @stack('js')
+
+    @livewireScripts
 </body>
 
 </html>

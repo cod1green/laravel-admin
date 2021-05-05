@@ -26,6 +26,8 @@
 
     @yield('js-head')
     @stack('js-head')
+
+    @livewireStyles
 </head>
 
 <body>
@@ -121,6 +123,8 @@
 
     @yield('js')
     @stack('js')
+
+    @livewireScripts
 </body>
 
 </html>
