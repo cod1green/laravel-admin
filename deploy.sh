@@ -3,6 +3,7 @@ set -e
 
 (git push) || true
 
+git rebase --quit
 git checkout production
 git remote update
 git rebase origin/master
