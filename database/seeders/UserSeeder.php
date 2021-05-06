@@ -16,11 +16,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name'      		=> 'Administrador',
-            'email'     		=> env('ADMIN_EMAIL', 'admin@admin.com'),
-            'password'  		=> env('ADMIN_PASSWORD', 'admin'),
+            'name'              => 'Administrador',
+            'email'             => env('ADMIN_EMAIL', 'admin@admin.com'),
+            'password'          => env('ADMIN_PASSWORD', 'admin'),
             'email_verified_at' => now(),
-            'remember_token' 	=> Str::random(10),
+            'remember_token'    => Str::random(10),
             'active'            => true,
         ])->assignRole(1);
     }

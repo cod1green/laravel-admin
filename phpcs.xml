@@ -8,6 +8,8 @@
     <file>FOLDER NAME</file>
     -->
     <file>app</file>
+    <file>config</file>
+    <file>database</file>
 
     <!-- exclude our migrations directory from the violation check-->
     <exclude-pattern>*/migrations/*</exclude-pattern>
