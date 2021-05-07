@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
 
-class ConfigController extends Controller
+class CommandController extends Controller
 {
     public function optimize()
     {
         Artisan::call('optimize');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function optimizeClear()
     {
         Artisan::call('optimize:clear');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function route()
@@ -27,14 +26,14 @@ class ConfigController extends Controller
         Artisan::call('route:clear');
         Artisan::call('route:cache');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function routeClear()
     {
         Artisan::call('route:clear');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function config()
@@ -42,7 +41,7 @@ class ConfigController extends Controller
         Artisan::call('config:clear');
         Artisan::call('config:cache');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function configClear()
@@ -50,7 +49,7 @@ class ConfigController extends Controller
         Artisan::call('config:clear');
         Artisan::call('config:cache');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function view()
@@ -58,20 +57,20 @@ class ConfigController extends Controller
         Artisan::call('view:clear');
         Artisan::call('view:cache');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function viewClear()
     {
         Artisan::call('view:clear');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function cacheClear()
     {
         Artisan::call('cache:clear');
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 }

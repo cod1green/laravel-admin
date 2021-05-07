@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -192,6 +192,9 @@ return [
 
         // PACKAGE GOOGLE DRIVE
         App\Providers\GoogleDriveServiceProvider::class,
+
+        // ADMIN LAYOUT
+        App\Providers\BladeComponentServiceProvider::class,
     ],
 
     /*

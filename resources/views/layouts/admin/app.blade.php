@@ -13,7 +13,7 @@
 
     <title>
         @section('title')
-        Admin
+            Admin
         @show
     </title>
 
@@ -26,24 +26,27 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-        @include('layouts.admin.partials.navbar')
+<div class="wrapper">
+    @include('layouts.admin.partials.navbar')
 
-        @include('layouts.admin.partials.sidebar-left')
+    @include('layouts.admin.partials.sidebar-left')
 
-        @include('layouts.admin.partials.content')
-
-        @include('layouts.admin.partials.sidebar-rigth')
-
-        @include('layouts.admin.partials.footer')
+    <div class="content-wrapper">
+        @yield('content')
+        {{ $slot ?? '' }}
     </div>
 
-    @include('layouts.admin.partials.scripts')
+    @include('layouts.admin.partials.sidebar-rigth')
 
-    @yield('js')
-    @stack('js')
+    @include('layouts.admin.partials.footer')
+</div>
 
-    @livewireScripts
+@include('layouts.admin.partials.scripts')
+
+@yield('js')
+@stack('js')
+
+@livewireScripts
 </body>
 
 </html>
