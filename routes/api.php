@@ -41,9 +41,9 @@ Route::group(
         Route::group(
             ['middleware' => ['auth:sanctum']],
             function () {
-                Route::apiResource('users', App\Http\Controllers\Api\V1\Admin\UserApiController::class);
-                Route::apiResource('roles', App\Http\Controllers\Api\V1\Admin\RoleApiController::class);
-                Route::apiResource('permissions', App\Http\Controllers\Api\V1\Admin\PermissionApiController::class);
+                Route::apiResource('users', App\Http\Controllers\Api\V1\Admin\UserController::class);
+                Route::apiResource('roles', App\Http\Controllers\Api\V1\Admin\RoleController::class);
+                Route::apiResource('permissions', App\Http\Controllers\Api\V1\Admin\PermissionController::class);
             }
         );
     }

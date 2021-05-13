@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
-use Spatie\Permission\Models\Permission;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
-use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Admin\PermissionResource;
+use App\Models\Permission;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
-class PermissionApiController extends Controller
+class PermissionController extends Controller
 {
-    private $permissions_not_removed = [
+    private $notRemoved = [
         'role_create',
         'role_edit',
         'role_show',
@@ -30,12 +28,13 @@ class PermissionApiController extends Controller
         'user_show',
         'user_delete',
         'user_access',
-        'debug_access',
+        'debug',
+        'command',
     ];
 
     public function index()
     {
-        abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission_read'), Response::HTTP_FORBIDDEN);
         return new PermissionResource(Permission::all());
     }
 
@@ -51,7 +50,7 @@ class PermissionApiController extends Controller
 
     public function show(Permission $permission)
     {
-        abort_if(Gate::denies('permission_show'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission_read'), Response::HTTP_FORBIDDEN);
         return new PermissionResource($permission);
     }
 
@@ -70,7 +69,7 @@ class PermissionApiController extends Controller
         abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN);
 
         // Tornar impossível excluir estas permissões
-        if (in_array($permission->name, $this->permissions_not_removed)) {
+        if (in_array($permission->name, $this->notRemoved)) {
             // 'Não é possível excluir esta permissão!'
         }
 

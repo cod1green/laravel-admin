@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\MassDestroyUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use Spatie\Permission\Models\Permission;
-use App\Http\Requests\MassDestroyUserRequest;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -41,8 +41,8 @@ class UserController extends Controller
         $user->syncPermissions($request->input('permissions', []));
 
         return redirect()
-                ->route('admin.users.index')
-                ->with('success', "Usuário {$user->name} cadastrado com sucesso.");
+            ->route('admin.users.index')
+            ->with('success', "Usuário {$user->name} cadastrado com sucesso.");
     }
 
     public function show(User $user)

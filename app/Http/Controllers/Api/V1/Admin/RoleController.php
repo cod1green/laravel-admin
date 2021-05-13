@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use Spatie\Permission\Models\Permission;
 use App\Http\Resources\Admin\RoleResource;
+use App\Models\Role;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class RoleApiController extends Controller
+class RoleController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role_read'), Response::HTTP_FORBIDDEN);
         return new RoleResource(Role::with(['permissions'])->get());
     }
 
@@ -32,7 +30,7 @@ class RoleApiController extends Controller
 
     public function show(Role $role)
     {
-        abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role_read'), Response::HTTP_FORBIDDEN);
         return new RoleResource($role->load(['permissions']));
     }
 

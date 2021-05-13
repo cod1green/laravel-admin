@@ -2,25 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdateProfileRequest;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProfileController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function edit()
     {
         return view('admin.profile.edit');
@@ -37,7 +27,7 @@ class ProfileController extends Controller
             unset($data['password']);
         } else {
             // alterar a senha somente se informar a senha atual
-            if (! Hash::check($request->input('current_password'), $user->password)) {
+            if (!Hash::check($request->input('current_password'), $user->password)) {
                 return redirect()
                     ->back()
                     ->with('error', 'Nova senha não alterado, senha atual está incorreta.');
@@ -46,7 +36,7 @@ class ProfileController extends Controller
 
         // alterar email somente se informar a senha atual
         if ($request->input('email') != $user->email) {
-            if (! Hash::check($request->input('current_password'), $user->password)) {
+            if (!Hash::check($request->input('current_password'), $user->password)) {
                 return redirect()
                     ->back()
                     ->with('error', 'E-mail não alterado, senha atual incorreta.');
@@ -58,21 +48,23 @@ class ProfileController extends Controller
             $count = $user->getMedia('avatar')->count();
             if ($count >= 3) {
                 return redirect()
-                ->back()
-                ->with('error', 'É permitido somente 3 fotos por usuário.');
+                    ->back()
+                    ->with('error', 'É permitido somente 3 fotos por usuário.');
             }
 
             $media = $user
                 ->addMedia($request->image)
-                ->sanitizingFileName(function ($fileName) {
-                    return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
-                })
+                ->sanitizingFileName(
+                    function ($fileName) {
+                        return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
+                    }
+                )
                 ->toMediaCollection('avatar');
 
             if (!$media) {
                 return redirect()
-                ->back()
-                ->with('error', 'Falha ao fazer o upload da foto');
+                    ->back()
+                    ->with('error', 'Falha ao fazer o upload da foto');
             }
 
             $data['avatar_id'] = $media->id;
@@ -81,13 +73,13 @@ class ProfileController extends Controller
         $update = $user->update($data);
         if ($update) {
             return redirect()
-                    ->route('profile.edit')
-                    ->with('success', 'Perfil atualizado com sucesso!');
+                ->route('profile.edit')
+                ->with('success', 'Perfil atualizado com sucesso!');
         }
 
         return redirect()
-                ->back()
-                ->with('error', 'Falha ao atualizar o perfil.');
+            ->back()
+            ->with('error', 'Falha ao atualizar o perfil.');
     }
 
     public function updateFoto(Request $request)
@@ -98,8 +90,8 @@ class ProfileController extends Controller
 
         if ($update) {
             return redirect()
-                    ->back()
-                    ->with('success', 'Foto atualizada com sucesso!');
+                ->back()
+                ->with('success', 'Foto atualizada com sucesso!');
         }
     }
 
@@ -112,7 +104,7 @@ class ProfileController extends Controller
             $avatar_id = $avatar_id->id;
         }
         $media = Media::find($avatar_id);
-        if (! $media) {
+        if (!$media) {
             throw MediaCannotBeDeleted::doesNotBelongToModel($avatar_id, $this);
         }
         $delete = $media->delete();
@@ -122,12 +114,12 @@ class ProfileController extends Controller
             $user->save();
 
             return redirect()
-                    ->back()
-                    ->with('success', 'Foto deletada com sucesso!');
+                ->back()
+                ->with('success', 'Foto deletada com sucesso!');
         }
 
         return redirect()
-                ->back()
-                ->with('error', 'Falha ao deletar a foto.');
+            ->back()
+            ->with('error', 'Falha ao deletar a foto.');
     }
 }

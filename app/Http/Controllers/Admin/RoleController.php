@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\MassDestroyRoleRequest;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use Spatie\Permission\Models\Permission;
-use App\Http\Requests\MassDestroyRoleRequest;
+use App\Models\Permission;
+use App\Models\Role;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
-        // $this->middleware(['permission:role_access']);
-    }
-
     public function index()
     {
-        // abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role_read'), Response::HTTP_FORBIDDEN);
 
         $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
@@ -47,7 +40,7 @@ class RoleController extends Controller
 
     public function show(Role $role)
     {
-        abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role_read'), Response::HTTP_FORBIDDEN);
 
         $role->load('permissions');
 
@@ -56,7 +49,7 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role_update'), Response::HTTP_FORBIDDEN);
 
         $role->load('permissions');
 
@@ -81,7 +74,7 @@ class RoleController extends Controller
         // Torna impossível excluir este papel específico admin
         if ($role->id == 1) {
             return redirect()->route('admin.roles.index')
-            ->with('warning', "Não é possível excluir a função {$role->name}.");
+                ->with('warning', "Não é possível excluir a função {$role->name}.");
         }
 
         $role->delete();
@@ -90,11 +83,6 @@ class RoleController extends Controller
             ->with('success', "Função {$role->name} excluída com sucesso.");
     }
 
-    /**
-     * Excluir todas as funções selecionadas de uma vez.
-     *
-     * @param Request $request
-     */
     public function massDestroy(MassDestroyRoleRequest $request)
     {
         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN);

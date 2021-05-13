@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use Spatie\Permission\Models\Permission;
 use App\Http\Resources\Admin\UserResource;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserApiController extends Controller
+class UserController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('user_read'), Response::HTTP_FORBIDDEN);
         return new UserResource(User::with(['roles', 'permissions'])->get());
     }
 
@@ -34,7 +31,7 @@ class UserApiController extends Controller
 
     public function show(User $user)
     {
-        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('user_read'), Response::HTTP_FORBIDDEN);
         return new UserResource($user->load(['roles', 'permissions']));
     }
 

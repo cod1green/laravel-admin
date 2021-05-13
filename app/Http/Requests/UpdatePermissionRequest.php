@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdatePermissionRequest extends FormRequest
@@ -15,7 +15,7 @@ class UpdatePermissionRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission_update'), Response::HTTP_FORBIDDEN);
         return true;
     }
 

@@ -50,7 +50,10 @@ return [
 
     'profile.edit' => 'Editar perfil',
 
+    'commands' => 'Comandos',
+
     'debug' => 'Depurar',
+
     'member.since' => 'Membro desde',
     'followers' => 'Seguidores',
     'sales' => 'Vendas',

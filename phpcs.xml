@@ -4,9 +4,6 @@
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
     <description>PHPCS configuration file.</description>
 
-    <!-- check all files in the app directory, feel free to add more files with:
-    <file>FOLDER NAME</file>
-    -->
     <file>app</file>
     <file>config</file>
     <file>database</file>
@@ -15,12 +12,12 @@
     <exclude-pattern>*/migrations/*</exclude-pattern>
 
     <!-- ignore warnings and display ERRORS only -->
-    <arg  value="np"/>
+    <arg value="np"/>
     <arg name="basepath" value="."/>
     <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
 
     <!-- Our base rule: set to PSR12-->
-    <rule  ref="PSR12"/>
+    <rule ref="PSR12"/>
 </ruleset>

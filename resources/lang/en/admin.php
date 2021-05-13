@@ -50,7 +50,10 @@ return [
 
     'profile.edit' => 'Edit profile',
 
+    'commands' => 'Commands',
+
     'debug' => 'Debug',
+
     'member.since' => 'Member since',
     'followers' => 'Followers',
     'sales' => 'Sales',
