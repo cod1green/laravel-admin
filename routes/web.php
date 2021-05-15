@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Livewire\Admin\Backup\Index AS BackupIndex;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::middleware(['verified'])->group(
                 Route::get('/optimize-cache', [CommandController::class, 'optimize'])->name('optimize.cache');
                 Route::get('/optimize-clear', [CommandController::class, 'optimizeClear'])
                     ->name('optimize.clear');
+
+                Route::get('backups', BackupIndex::class)->name('backups.index');
             }
         );
 
