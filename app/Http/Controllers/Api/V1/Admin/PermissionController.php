@@ -13,28 +13,29 @@ use Symfony\Component\HttpFoundation\Response;
 class PermissionController extends Controller
 {
     private $notRemoved = [
-        'role_create',
-        'role_edit',
-        'role_show',
-        'role_delete',
-        'role_access',
-        'permission_create',
-        'permission_edit',
-        'permission_show',
-        'permission_delete',
-        'permission_access',
-        'user_create',
-        'user_edit',
-        'user_show',
-        'user_delete',
-        'user_access',
+        'user-create',
+        'user-read',
+        'user-update',
+        'user-delete',
+
+        'role-create',
+        'role-read',
+        'role-update',
+        'role-delete',
+
+        'permission-create',
+        'permission-read',
+        'permission-update',
+        'permission-delete',
+
         'debug',
         'command',
+        'backup',
     ];
 
     public function index()
     {
-        abort_if(Gate::denies('permission_read'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission-read'), Response::HTTP_FORBIDDEN);
         return new PermissionResource(Permission::all());
     }
 
@@ -50,7 +51,7 @@ class PermissionController extends Controller
 
     public function show(Permission $permission)
     {
-        abort_if(Gate::denies('permission_read'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission-read'), Response::HTTP_FORBIDDEN);
         return new PermissionResource($permission);
     }
 
@@ -66,7 +67,7 @@ class PermissionController extends Controller
 
     public function destroy(Permission $permission)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission-delete'), Response::HTTP_FORBIDDEN);
 
         // Tornar impossível excluir estas permissões
         if (in_array($permission->name, $this->notRemoved)) {

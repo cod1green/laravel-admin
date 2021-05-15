@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Role;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -29,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         // Isso funciona no aplicativo usando funções relacionadas ao gate como:
         // auth()->user()->can() e @can()
         Gate::before(function ($user, $ability) {
-            if ($user->hasRole(1)) {
+            if ($user->hasRole(Role::ADMIN)) {
                 return true;
             }
         });

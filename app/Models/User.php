@@ -2,31 +2,55 @@
 
 namespace App\Models;
 
+use App\Support\HasAdvancedFilter;
+use Carbon\Carbon;
+use DateTimeInterface;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\MediaLibrary\MediaCollections\File;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
+    use HasAdvancedFilter;
+    use SoftDeletes;
     use Notifiable;
     use HasRoles;
     use InteractsWithMedia;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    public $table = 'users';
+
+    public $orderable = [
+        'id',
+        'name',
+        'email',
+        'email_verified_at',
+        'active',
+    ];
+
+    public $filterable = [
+        'id',
+        'name',
+        'email',
+        'email_verified_at',
+        'roles.name',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected $fillable = [
         'name',
         'email',
@@ -37,25 +61,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'active',
     ];
 
+    protected $dates = [
+        'email_verified_at',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     protected $appends = ['registered'];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     public function scopeToday($query)
     {
@@ -72,20 +85,32 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $query->where('active', 0);
     }
 
-    public function getRegisteredAttribute()
+    public function getRegisteredAttribute($value)
     {
-        return $this->created_at->diffForHumans();
+//        return $this->created_at->diffForHumans();
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans() : null;
     }
 
-    /**
-     * Hash password
-     * @param $input
-     */
     public function setPasswordAttribute($input)
     {
         if ($input) {
-            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+            $this->attributes['password'] = Hash::needsRehash($input) ? Hash::make($input) : $input;
         }
+    }
+
+    public function getEmailVerifiedAtAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(
+            config('project.datetime_format')
+        ) : null;
+    }
+
+    public function setEmailVerifiedAtAttribute($value)
+    {
+        $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(
+            config('project.datetime_format'),
+            $value
+        )->format('Y-m-d H:i:s') : null;
     }
 
     public function registerMediaCollections(): void
@@ -98,34 +123,47 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->useFallbackUrl('/img/no-user.png')
             ->useFallbackPath(public_path('/img/no-user.png'))
             ->withResponsiveImages()
-            ->acceptsFile(function (File $file) {
-                return in_array($file->mimeType, ['image/jpeg', 'image/png']);
-            })
-            ->registerMediaConversions(function (Media $media) {
-                // $this->addMediaConversion('card')
-                //     ->width(400)
-                //     ->height(300);
+            ->acceptsFile(
+                function (File $file) {
+                    return in_array($file->mimeType, ['image/jpeg', 'image/png']);
+                }
+            )
+            ->registerMediaConversions(
+                function (Media $media) {
+                    // $this->addMediaConversion('card')
+                    //     ->width(400)
+                    //     ->height(300);
 
-                $this->addMediaConversion('thumb')
-                    ->width(100)
-                    ->height(100);
-            });
+                    $this->addMediaConversion('thumb')
+                        ->width(100)
+                        ->height(100);
+                }
+            );
 
         $this
             ->addMediaCollection('fotos')
-            ->acceptsFile(function (File $file) {
-                return in_array($file->mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/tiff']);
-            });
+            ->acceptsFile(
+                function (File $file) {
+                    return in_array($file->mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/tiff']);
+                }
+            );
 
         $this
             ->addMediaCollection('videos')
-            ->acceptsFile(function (File $file) {
-                return in_array($file->mimeType, ['video/x-msvideo', 'video/mpeg']);
-            });
+            ->acceptsFile(
+                function (File $file) {
+                    return in_array($file->mimeType, ['video/x-msvideo', 'video/mpeg']);
+                }
+            );
     }
 
     public function avatar()
     {
         return $this->hasOne(Media::class, 'id', 'avatar_id');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

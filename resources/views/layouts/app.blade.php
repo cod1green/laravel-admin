@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>
@@ -14,20 +13,15 @@
         @show
     </title>
 
-    <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    @yield('css')
-    @stack('css')
-
-    @yield('js-head')
-    @stack('js-head')
-
     @livewireStyles
+
+    @yield('styles')
+    @stack('styles')
 </head>
 
 <body>
@@ -55,7 +49,7 @@
                     @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                                <i class="fa fa-btn fa-tachometer-alt"></i> Dashboard
+                                <i class="fa fa-btn fa-tv"></i> Dashboard
                             </a>
                         </li>
                     @endauth
@@ -89,17 +83,17 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="fa fa-btn fa-user"></i> @lang('admin.profile')
+                                <a class="dropdown-item" href="{{ route('profile') }}">
+                                    <i class="fa fa-btn fa-user"></i> @lang('project.profile.title_singular')
                                 </a>
 
                                 <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                    <i class="fa fa-btn fa-tachometer-alt"></i> Dashboard
+                                    <i class="fa fa-btn fa-tv"></i> @lang('project.dashboard.title')
                                 </a>
 
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-power-off"></i> {{ __('Logout') }}
+                                    <i class="fas fa-power-off"></i> @lang('global.logout')
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -118,13 +112,11 @@
     </main>
 </div>
 
-<!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 
-@yield('js')
-@stack('js')
-
 @livewireScripts
-</body>
 
+@yield('scripts')
+@stack('scripts')
+</body>
 </html>

@@ -1,29 +1,13 @@
-@section('title', trans('admin.users.create'))
+@section('title', trans('project.dashboard.title'))
 
-<x-admin-layout>
-    @include('includes.alerts')
+<x-layout-admin>
+    @include('components.alerts')
 
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class='fa fa-user-plus'></i> @lang('admin.users.create')</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                        </li>
-
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('admin.users.index') }}">
-                                <i class="fas fa-users"></i> @lang('admin.users.list')
-                            </a>
-                        </li>
-
-                        <li class="breadcrumb-item active"><i class='fa fa-user-plus'></i> @lang('admin.users.create')
-                        </li>
-                    </ol>
+                    <h1><i class="fas fa-tv"></i> @lang('project.dashboard.title')</h1>
                 </div>
             </div>
         </div>
@@ -35,15 +19,13 @@
                 <div class="col-12">
                     <div class="card card-success">
                         <div class="card-header">
-                            <!-- <h3 class="card-title">All together</h3> -->
-
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                        class="fas fa-minus"></i></button>
-                                <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
-                                        class="fas fa-expand"></i></button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i
-                                        class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                    <i class="fas fa-expand"></i>
+                                </button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -54,4 +36,4 @@
             </div>
         </div>
     </section>
-</x-admin-layout>
+</x-layout-admin>

@@ -15,7 +15,7 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_if(Gate::denies('role_update'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role-update'), Response::HTTP_FORBIDDEN);
         return true;
     }
 

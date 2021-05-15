@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_read'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('user-read'), Response::HTTP_FORBIDDEN);
         return new UserResource(User::with(['roles', 'permissions'])->get());
     }
 
@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        abort_if(Gate::denies('user_read'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('user-read'), Response::HTTP_FORBIDDEN);
         return new UserResource($user->load(['roles', 'permissions']));
     }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('user-delete'), Response::HTTP_FORBIDDEN);
         $user->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }

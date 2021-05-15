@@ -8,18 +8,19 @@
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
-npm-debug.log
-yarn-error.log
+*.log
 .phpcs-cache
 
-# ide files
-/.idea
+# IDE
 /.vscode
+.idea/workspace.xml
 
 # public files
 /public/vendor/admin-lte
 /public/vendor/telescope
 /public/vendor/livewire
+/public/vendor/toastify-js
+/public/vendor/underscore
 /public/css
 /public/js
 /public/fonts

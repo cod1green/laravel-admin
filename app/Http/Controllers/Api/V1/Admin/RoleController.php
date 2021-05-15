@@ -14,7 +14,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('role_read'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role-read'), Response::HTTP_FORBIDDEN);
         return new RoleResource(Role::with(['permissions'])->get());
     }
 
@@ -30,7 +30,7 @@ class RoleController extends Controller
 
     public function show(Role $role)
     {
-        abort_if(Gate::denies('role_read'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role-read'), Response::HTTP_FORBIDDEN);
         return new RoleResource($role->load(['permissions']));
     }
 
@@ -46,7 +46,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('role-delete'), Response::HTTP_FORBIDDEN);
 
         // Torna impossível excluir este papel específico admin
         if ($role->id == 1) {

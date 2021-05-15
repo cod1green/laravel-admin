@@ -192,9 +192,6 @@ return [
 
         // PACKAGE GOOGLE DRIVE
         App\Providers\GoogleDriveServiceProvider::class,
-
-        // ADMIN LAYOUT
-        App\Providers\BladeComponentServiceProvider::class,
     ],
 
     /*

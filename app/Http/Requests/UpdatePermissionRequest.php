@@ -15,7 +15,7 @@ class UpdatePermissionRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_if(Gate::denies('permission_update'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('permission-update'), Response::HTTP_FORBIDDEN);
         return true;
     }
 

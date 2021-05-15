@@ -1,1 +1,7 @@
-.card.maximized-card{overflow-y:scroll}
+.card.maximized-card {
+    overflow-y: scroll
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

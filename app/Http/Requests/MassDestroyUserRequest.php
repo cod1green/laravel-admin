@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class MassDestroyUserRequest extends FormRequest
@@ -15,7 +15,7 @@ class MassDestroyUserRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('user-delete'), Response::HTTP_FORBIDDEN);
         return true;
     }
 
@@ -27,7 +27,7 @@ class MassDestroyUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'ids'   => ['required', 'array'],
+            'ids' => ['required', 'array'],
             'ids.*' => ['exists:users,id'],
         ];
     }
