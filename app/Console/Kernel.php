@@ -24,17 +24,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('telescope:prune --hours=48')->daily()->environments(['staging', 'production']);
-
-        $schedule->command('backup:clean')->daily()->at('01:00')->environments(['staging', 'production']);
-        $schedule->command('backup:run --only-db')
-            ->weekdays()
-            ->saturdays()
-            ->at('01:30')
+        $schedule->command('telescope:prune --hours=48')->daily()
             ->environments(['staging', 'production']);
 
-        $schedule->command('backup:run')->sundays()->at('01:30')->environments(['staging', 'production']);
+        $schedule->command('backup:clean')->daily()->at('01:00')
+            ->environments(['staging', 'production']);
+
+        $schedule->command('backup:run --only-db')->weekdays()->at('01:30')
+            ->environments(['staging', 'production']);
+
+        $schedule->command('backup:run --only-db')->saturdays()->at('01:30')
+            ->environments(['staging', 'production']);
+
+        $schedule->command('backup:run')->sundays()->at('01:30')
+            ->environments(['staging', 'production']);
     }
 
     /**
