@@ -7,12 +7,7 @@ use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         Permission::create(['name' => 'user-create', 'guard_name' => 'web']);
         Permission::create(['name' => 'user-read', 'guard_name' => 'web']);

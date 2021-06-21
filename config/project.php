@@ -20,8 +20,8 @@ return [
     | Logo
     |--------------------------------------------------------------------------
     */
-    'logo' => '<b>Cod1</b>green',
-    'logo_mini' => '<b>C</b>G',
+    'logo' => env('APP_NAME', 'Laravel'),
+    'logo_img' => env('APP_LOGO', 'vendor/admin-lte/dist/img/AdminLTELogo.png'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,10 +44,10 @@ return [
     | Footer
     |--------------------------------------------------------------------------
     */
-    'since_year' => '2019',
-    'footer_name' => 'Cod1green',
-    'produced_by' => 'Cod1green',
-    'produced_url' => 'http://cod1green.com.br',
+    'since_year' => env('APP_SINCE_YEAR', date('Y')),
+    'footer_name' => env('APP_FOOTER_NAME', 'Laravel'),
+    'produced_by' => env('APP_PRODUCED_BY', 'Laravel'),
+    'produced_url' => env('APP_PRODUCED_URL', 'https://laravel.com'),
     /*
      * Text Size:  null, 'text-sm'
      */

@@ -306,7 +306,7 @@ return [
     'messenger' => 'Messenger',
     'version' => 'Versão',
     'produced_by' => 'Produzido por',
-    'all_rights_reserved' => 'Todos os direitos reservados desde',
+    'all_rights_reserved' => 'Todos os direitos reservados',
     'alert' => [
         'info' => 'Informação',
         'success' => 'Sucesso',

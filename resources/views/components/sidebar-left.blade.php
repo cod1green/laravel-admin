@@ -1,9 +1,9 @@
 <aside class="main-sidebar sidebar-{{ config('project.sidebar_theme') }}-{{ config('project.color') }} elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin.dashboard') }}" class="brand-link">
-        <img src="{{ asset('vendor/admin-lte/dist/img/AdminLTELogo.png')}}" alt="..."
+        <img src="{{ asset(config('project.logo_img'))}}" alt="..."
              class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">{!! config('project.logo', '<b>Cod1</b>green') !!}</span>
+        <span class="brand-text font-weight-light">{!! config('project.logo') !!}</span>
     </a>
 
     <!-- Sidebar -->
