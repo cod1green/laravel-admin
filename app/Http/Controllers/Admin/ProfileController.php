@@ -73,7 +73,7 @@ class ProfileController extends Controller
         $update = $user->update($data);
         if ($update) {
             return redirect()
-                ->route('profile.edit')
+                ->route('profile')
                 ->with('success', 'Perfil atualizado com sucesso!');
         }
 
