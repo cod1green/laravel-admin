@@ -8,6 +8,7 @@ use App\Rules\PathToZip;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
@@ -30,9 +31,11 @@ class Index extends Component
 
     public $deletingFile = null;
 
+    public $googleDisk = 'google_backup';
+
     public function render()
     {
-        abort_if(Gate::denies('backup'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN);
+        abort_if(Gate::denies('backup'), Response::HTTP_FORBIDDEN);
         return view('livewire.admin.backup.index');
     }
 
@@ -157,7 +160,10 @@ class Index extends Component
     public function downloadFile(string $filePath)
     {
         $this->validateActiveDisk();
-        $this->validateFilePath($filePath);
+
+        if ($this->activeDisk !== $this->googleDisk) {
+            $this->validateFilePath($filePath);
+        }
 
         $backupDestination = BackupDestination::create($this->activeDisk, config('backup.backup.name'));
 
@@ -171,34 +177,48 @@ class Index extends Component
             return response('Backup not found', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->respondWithBackupStream($backup);
+        return $this->responseStream($backup);
     }
 
-    public function respondWithBackupStream(Backup $backup): StreamedResponse
+    protected function responseStream(Backup $backup): StreamedResponse
     {
-        $fileName = pathinfo($backup->path(), PATHINFO_BASENAME);
+        if ($this->activeDisk === $this->googleDisk) {
+            $contents = collect(Storage::disk($this->googleDisk)->listContents('/', false));
+
+            $file = $contents
+                ->where('type', '=', 'file')
+                ->where('basename', '=', $backup->path())
+                ->first();
+
+            $fileName = $file['name'];
+            $mimeType = $file['mimetype'];
+            $stream = Storage::disk($this->googleDisk)->getDriver()->readStream($file['path']);
+        } else {
+            $fileName = pathinfo($backup->path(), PATHINFO_BASENAME);
+            $mimeType = 'application/zip';
+            $stream = $backup->stream();
+        }
+
         $size = method_exists($backup, 'sizeInBytes') ? $backup->sizeInBytes() : $backup->size();
 
-        $downloadHeaders = [
+        $headers = [
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-Type' => 'application/zip',
+            'Content-Type' => $mimeType,
             'Content-Length' => $size,
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            'Content-Disposition' => "attachment; filename=$fileName",
             'Pragma' => 'public',
         ];
 
         return response()->stream(
-            function () use ($backup) {
-                $stream = $backup->stream();
-
+            function () use ($stream) {
                 fpassthru($stream);
 
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
             },
-            200,
-            $downloadHeaders
+            Response::HTTP_OK,
+            $headers
         );
     }
 
