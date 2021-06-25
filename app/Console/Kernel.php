@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+//use Illuminate\Support\Facades\Log;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -24,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command(Illuminate\Support\Facades\Log::info("It's working"))->everyMinute();
+        //$schedule->command(Log::info("It's working"))->everyMinute();
 
         $schedule->command('telescope:prune --hours=48')->daily()
             ->environments(['staging', 'production']);
