@@ -8,9 +8,7 @@ class BackupDisk implements Rule
 {
     public function passes($attribute, $value)
     {
-        $configuredBackupDisks = config('backup.backup.destination.disks');
-
-        return in_array($value, $configuredBackupDisks);
+        return in_array($value, config('backup.backup.destination.disks'));
     }
 
     public function message()

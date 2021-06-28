@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BackupController;
+use App\Http\Controllers\Admin\BackupDownloadController;
 use App\Http\Controllers\Admin\CommandController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -38,6 +39,9 @@ Route::middleware(['verified'])->group(
                 );
 
                 Route::get('backups', BackupController::class)->name('backup');
+
+                Route::get('/backups/download/disk/{disk}/file/{file}', BackupDownloadController::class)
+                    ->name('backup.download');
 
                 Route::get('/optimize-cache', [CommandController::class, 'optimize'])->name('optimize.cache');
                 Route::get('/optimize-clear', [CommandController::class, 'optimizeClear'])
