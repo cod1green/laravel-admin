@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Backup;
+namespace App\Http\Livewire\Admin;
 
 use App\Jobs\CreateBackupJob;
 use App\Rules\BackupDisk;
@@ -16,7 +16,7 @@ use Spatie\Backup\Helpers\Format;
 use Spatie\Backup\Tasks\Monitor\BackupDestinationStatus;
 use Spatie\Backup\Tasks\Monitor\BackupDestinationStatusFactory;
 
-class Index extends Component
+class Backup extends Component
 {
     public $backupStatuses = [];
 
@@ -31,7 +31,7 @@ class Index extends Component
     public function render()
     {
         abort_if(Gate::denies('backup'), Response::HTTP_FORBIDDEN);
-        return view('livewire.admin.backup.index');
+        return view('livewire.admin.backup');
     }
 
     public function updateBackupStatuses()
@@ -42,20 +42,17 @@ class Index extends Component
             function () {
                 return BackupDestinationStatusFactory::createForMonitorConfig(config('backup.monitor_backups'))
                     ->map(
-                        function (BackupDestinationStatus $backupDestinationStatus) {
+                        function (BackupDestinationStatus $backup) {
                             return [
-                                'name' => $backupDestinationStatus->backupDestination()->backupName(),
-                                'disk' => $backupDestinationStatus->backupDestination()->diskName(),
-                                'reachable' => $backupDestinationStatus->backupDestination()->isReachable(),
-                                'healthy' => $backupDestinationStatus->isHealthy(),
-                                'amount' => $backupDestinationStatus->backupDestination()->backups()->count(),
-                                'newest' => $backupDestinationStatus->backupDestination()->newestBackup()
-                                    ? $backupDestinationStatus->backupDestination()->newestBackup()->date(
-                                    )->diffForHumans()
-                                    : 'No backups present',
-                                'usedStorage' => Format::humanReadableSize(
-                                    $backupDestinationStatus->backupDestination()->usedStorage()
-                                ),
+                                'name' => $backup->backupDestination()->backupName(),
+                                'disk' => $backup->backupDestination()->diskName(),
+                                'reachable' => $backup->backupDestination()->isReachable(),
+                                'healthy' => $backup->isHealthy(),
+                                'amount' => $backup->backupDestination()->backups()->count(),
+                                'newest' => $backup->backupDestination()->newestBackup()
+                                    ? $backup->backupDestination()->newestBackup()->date()->diffForHumans()
+                                    : trans('project.backup.no_backup_present'),
+                                'usedStorage' => Format::humanReadableSize($backup->backupDestination()->usedStorage()),
                             ];
                         }
                     )
@@ -102,7 +99,7 @@ class Index extends Component
 
                             return [
                                 'path' => $backup->path(),
-                                'date' => $backup->date()->format('Y-m-d H:i:s'),
+                                'date' => $backup->date()->format('d/m/Y H:i:s'),
                                 'size' => Format::humanReadableSize($size),
                             ];
                         }
@@ -119,7 +116,7 @@ class Index extends Component
         $this->emitSelf('showDeleteModal');
     }
 
-    public function deleteFile()
+    public function delete()
     {
         $deletingFile = $this->deletingFile;
         $this->deletingFile = null;
@@ -138,6 +135,8 @@ class Index extends Component
                 }
             )
             ->delete();
+
+        $this->updateBackupStatuses();
 
         $this->files = collect($this->files)
             ->reject(

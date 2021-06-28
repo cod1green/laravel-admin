@@ -14,17 +14,20 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="d-flex mb-3 justify-content-start">
-                    <button id="create-backup" class="btn btn-sm btn-success mr-2">
-                        <i class="fa fa-plus"></i> Create backup <i class="fa fa-folder"></i> <i
+                    <button id="create-backup" class="btn btn-sm btn-success mr-2"
+                            title="{{ __('project.backup.create') }}">
+                        <i class="fa fa-plus"></i> {{ __('project.backup.create') }} <i class="fa fa-folder"></i> <i
                             class="fa fa-database"></i>
                     </button>
 
-                    <button id="create-backup-only-files" class="btn btn-sm btn-success mr-2">
-                        <i class="fa fa-plus"></i> Create backup <i class="fa fa-folder"></i>
+                    <button id="create-backup-only-files" class="btn btn-sm btn-success mr-2"
+                            title="{{ __('project.backup.create_only_file') }}">
+                        <i class="fa fa-plus"></i> {{ __('project.backup.create') }} <i class="fa fa-folder"></i>
                     </button>
 
-                    <button id="create-backup-only-db" class="btn btn-sm btn-success">
-                        <i class="fa fa-plus"></i> Create backup <i class="fa fa-database"></i>
+                    <button id="create-backup-only-db" class="btn btn-sm btn-success"
+                            title="{{ __('project.backup.create_only_database') }}">
+                        <i class="fa fa-plus"></i> {{ __('project.backup.create') }} <i class="fa fa-database"></i>
                     </button>
 
                     <button class="btn btn-success btn-sm btn-refresh ml-auto"
@@ -46,11 +49,11 @@
                 <table class="table table-hover table-striped table-sm">
                     <thead>
                     <tr>
-                        <th scope="col">Disk</th>
-                        <th scope="col">Healthy</th>
-                        <th scope="col">Amount of backups</th>
-                        <th scope="col">Newest backup</th>
-                        <th scope="col">Used storage</th>
+                        <th scope="col">{{ __('project.backup.fields.disk') }}</th>
+                        <th scope="col">{{ __('project.backup.fields.healthy') }}</th>
+                        <th scope="col">{{ __('project.backup.fields.amount') }}</th>
+                        <th scope="col">{{ __('project.backup.fields.newest') }}</th>
+                        <th scope="col">{{ __('project.backup.fields.used_storage') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -120,14 +123,14 @@
                 <table class="table table-hover table-striped table-sm">
                     <thead>
                     <tr>
-                        <th scope="col">Path</th>
-                        <th scope="col">Created at</th>
-                        <th scope="col">Size</th>
+                        <th scope="col">{{ __('project.backup.fields.path') }}</th>
+                        <th scope="col">{{ __('project.backup.fields.created_at') }}</th>
+                        <th scope="col">{{ __('project.backup.fields.size') }}</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($files as $file)
+                    @forelse($files as $file)
                         <tr>
                             <td>{{ $file['path'] }}</td>
                             <td>{{ $file['date'] }}</td>
@@ -151,15 +154,13 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
-
-                    @if(!count($files))
+                    @empty
                         <tr>
                             <td class="text-center" colspan="4">
-                                {{ 'No backups present' }}
+                                {{ __('project.backup.no_backup_present') }}
                             </td>
                         </tr>
-                    @endif
+                    @endforelse
                     </tbody>
                 </table>
             </div>
@@ -171,20 +172,19 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <h5 class="modal-title mb-3">Delete backup</h5>
+                        <h5 class="modal-title mb-3">{{ __('project.backup.delete') }}</h5>
                         @if($deletingFile)
                             <span class="text-muted">
-                                    Are you sure you want to delete the backup created at {{ $deletingFile['date'] }} ?
+                                {{ __('project.backup.question_delete', ['created' => $deletingFile['date']]) }}
                                 </span>
                         @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default cancel-button" data-dismiss="modal">
-                            <i class="fa fa-undo"></i> @lang('global.cancel')
+                            <i class="fa fa-undo"></i> {{ __('global.cancel') }}
                         </button>
-                        <button type="button" class="btn btn-danger delete-button"
-                                wire:click="deleteFile">
-                            <i class="fas fa-trash"></i> @lang('global.delete')
+                        <button type="button" class="btn btn-danger delete-button" wire:click="delete">
+                            <i class="fas fa-trash"></i> {{ __('global.delete') }}
                         </button>
                     </div>
                 </div>
