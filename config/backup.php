@@ -118,7 +118,7 @@ return [
              */
             'disks' => [
                 'backup',
-                'google_backup',
+                'google',
                 // 'dropbox',
             ],
         ],
@@ -203,7 +203,7 @@ return [
             'name' => '',
             'disks' => [
                 'backup',
-                'google_backup',
+                'google',
                 // 'dropbox',
             ],
             'health_checks' => [

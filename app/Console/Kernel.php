@@ -28,19 +28,22 @@ class Kernel extends ConsoleKernel
     {
         //$schedule->command(Log::info("It's working"))->everyMinute();
 
+        $schedule->command('queue:restart')->everyFiveMinutes();
+        $schedule->command('queue:work --sleep=3 --tries=3')->everyMinute()->withoutOverlapping();
+
         $schedule->command('telescope:prune --hours=48')->daily()
             ->environments(['staging', 'production']);
 
-        $schedule->command('backup:clean --only-to-disk=google_backup')->daily()->at('01:00')
+        $schedule->command('backup:clean --only-to-disk=google')->daily()->at('01:00')
             ->environments(['staging', 'production']);
 
-        $schedule->command('backup:run --only-to-disk=google_backup --only-db')->weekdays()->at('01:30')
+        $schedule->command('backup:run --only-to-disk=google --only-db')->weekdays()->at('01:30')
             ->environments(['staging', 'production']);
 
-        $schedule->command('backup:run --only-to-disk=google_backup --only-db')->saturdays()->at('01:30')
+        $schedule->command('backup:run --only-to-disk=google --only-db')->saturdays()->at('01:30')
             ->environments(['staging', 'production']);
 
-        $schedule->command('backup:run --only-to-disk=google_backup')->sundays()->at('01:30')
+        $schedule->command('backup:run --only-to-disk=google')->sundays()->at('01:30')
             ->environments(['staging', 'production']);
     }
 
