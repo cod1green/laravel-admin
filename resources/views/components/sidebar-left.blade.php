@@ -8,20 +8,21 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
+        <!-- Sidebar User -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                @if(auth()->user()->avatar)
-                    <img src="{{ auth()->user()->avatar->getUrl('thumb') }}" class="img-circle elevation-2"
-                         style="width: 35px;height: 35px;">
-                @else
-                    <img src="{{ asset('img/no-user.png') }}" class="img-circle elevation-2"
-                         style="width: 35px;height: 35px;">
-                @endif
-            </div>
-            <div class="info">
-                <a href="{{ route('profile') }}" class="d-block">{{ auth()->user()->name }}</a>
-            </div>
+            <a href="{{ route('profile') }}" class="d-inline-flex align-items-center" title="{{ __('Profile') }}">
+                <div class="image mr-2">
+                    @if(auth()->user()->avatar)
+                        <img src="{{ auth()->user()->avatar->getUrl('thumb') }}" class="img-circle elevation-2"
+                             style="width: 35px;height: 35px;">
+                    @else
+                        <img src="{{ asset('img/no-user.png') }}" class="img-circle elevation-2"
+                             style="width: 35px;height: 35px;">
+                    @endif
+                </div>
+
+                <span>{{ auth()->user()->name }}</span>
+            </a>
         </div>
 
         <!-- Sidebar Menu -->
