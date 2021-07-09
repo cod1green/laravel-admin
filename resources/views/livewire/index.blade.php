@@ -1,8 +1,6 @@
-@extends('layouts.app')
-@section('title', 'Home')
+@section('title', trans('project.home.title'))
 
-@section('content')
-
+<div>
     <div class="container">
         @include('components.alerts')
 
@@ -12,7 +10,7 @@
             </div>
         </div>
     </div>
-@endsection
+</div>
 
 @push('styles')
     <style>

@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'path' => env('TELESCOPE_PATH', config('project.prefix') . '/debug'),
+    'path' => env('TELESCOPE_PATH', config('admin.prefix') . '/debug'),
 
     /*
     |--------------------------------------------------------------------------

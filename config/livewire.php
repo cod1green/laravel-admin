@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'layout' => config('project.theme'),
+    'layout' => config('admin.theme'),
 
     /*
     |--------------------------------------------------------------------------

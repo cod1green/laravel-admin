@@ -2,23 +2,13 @@
 
 namespace App\Http\Livewire\Admin\User;
 
-use App\Http\Livewire\Admin\AdminComponent;
+use App\Http\Livewire\Components\TableComponent;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 
-class Index extends AdminComponent
+class Index extends TableComponent
 {
-    public int $perPage;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
     protected $queryString = [
         'search' => [
             'except' => '',
@@ -33,6 +23,7 @@ class Index extends AdminComponent
 
     public function render()
     {
+        abort_if(Gate::denies('user-read'), Response::HTTP_FORBIDDEN);
         $query = User::with(['roles', 'permissions'])->advancedFilter(
             [
                 's' => $this->search ?: null,
@@ -50,8 +41,8 @@ class Index extends AdminComponent
     {
         $this->sortBy = 'id';
         $this->sortDirection = 'desc';
-        $this->perPage = config('project.pagination.per_page');
-        $this->paginationOptions = config('project.pagination.options');
+        $this->perPage = config('admin.pagination.per_page');
+        $this->paginationOptions = config('admin.pagination.options');
         $this->orderable = (new User())->orderable;
     }
 

@@ -15,12 +15,12 @@ class CommandController extends Controller
     public function optimize()
     {
         Artisan::call('optimize');
-        return redirect()->back()->with('success', "Optimize cache with success");
+        return redirect()->back();
     }
 
-    public function optimizeClear()
+    public function clear()
     {
         Artisan::call('optimize:clear');
-        return redirect()->back()->with('success', "Optimize clear with success");
+        return redirect()->back();
     }
 }

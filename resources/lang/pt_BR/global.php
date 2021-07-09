@@ -31,7 +31,9 @@ return [
     'remember_me' => 'Remember me',
     'reset_password' => 'Reset Password',
     'send_password' => 'Send Password Reset Link',
-    'save' => 'Save',
+    'save' => 'Salvar',
+    'apply' => 'Aplicar',
+    'remove' => 'Remover',
     'search' => 'Search',
     'searching' => 'Searching',
     'no_results' => 'No results',
@@ -313,4 +315,6 @@ return [
         'warning' => 'Atenção',
         'error' => 'Ops! Algo deu errado',
     ],
+    'per_page' => 'Por página',
+    'verified' => 'Verificado',
 ];

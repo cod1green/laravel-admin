@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Admin\Permission;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -23,6 +25,7 @@ class Create extends Component
 
     public function render()
     {
+        abort_if(Gate::denies('permission-create'), Response::HTTP_FORBIDDEN);
         return view('livewire.admin.permission.create');
     }
 

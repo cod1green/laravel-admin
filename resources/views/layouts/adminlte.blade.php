@@ -25,8 +25,8 @@
 </head>
 
 <body
-    class="hold-transition sidebar-mini accent-{{ config('project.color') }}
-    {{ config('project.sidebar_collapse') ? 'sidebar-collapse': '' }}">
+    class="hold-transition sidebar-mini accent-{{ config('admin.color') }}
+    {{ config('admin.sidebar_collapse') ? 'sidebar-collapse': '' }}">
 
 <div id="app" class="wrapper">
     @include('components.navbar')

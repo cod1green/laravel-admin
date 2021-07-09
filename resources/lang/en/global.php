@@ -32,6 +32,8 @@ return [
     'reset_password' => 'Reset Password',
     'send_password' => 'Send Password Reset Link',
     'save' => 'Save',
+    'apply' => 'Apply',
+    'remove' => 'Remove',
     'search' => 'Search',
     'searching' => 'Searching',
     'no_results' => 'No results',
@@ -313,4 +315,6 @@ return [
         'warning' => 'Warning',
         'error' => 'Oops! Something went wrong',
     ],
+    'per_page' => 'Per page',
+    'verified' => 'Verified',
 ];

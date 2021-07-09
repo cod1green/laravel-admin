@@ -3,7 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -40,19 +43,21 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">
-                            <i class="fa fa-btn fa-home"></i> Home
-                        </a>
-                    </li>
-
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                                <i class="fa fa-btn fa-tv"></i> Dashboard
+                            <a class="nav-link" href="{{ route('home') }}">
+                                <i class="fa fa-btn fa-home"></i> @lang('project.home.title')
                             </a>
                         </li>
                     @endauth
+
+                    @can('dashboard')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                                <i class="fa fa-btn fa-tv"></i> @lang('project.dashboard.title')
+                            </a>
+                        </li>
+                    @endcan
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -72,7 +77,7 @@
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @if(Auth::user()->avatar)
-                                    <img src="{{ Auth::user()->avatar->getUrl('thumb') }}" width="25" height="25"
+                                    <img src="{{ Auth::user()->avatar->getUrl() }}" width="25" height="25"
                                          alt="avatar" class="rounded-circle">
                                 @else
                                     <img src="{{ asset('img/no-user.png') }}" width="25" height="25" alt="avatar"
@@ -87,9 +92,11 @@
                                     <i class="fa fa-btn fa-user"></i> @lang('project.profile.title_singular')
                                 </a>
 
-                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                    <i class="fa fa-btn fa-tv"></i> @lang('project.dashboard.title')
-                                </a>
+                                @can('dashboard')
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        <i class="fa fa-btn fa-tv"></i> @lang('project.dashboard.title')
+                                    </a>
+                                @endcan
 
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -109,6 +116,7 @@
 
     <main class="py-4">
         @yield('content')
+        {{ $slot ?? '' }}
     </main>
 </div>
 

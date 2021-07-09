@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
 use Carbon\Carbon;
-use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,8 +27,32 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use Notifiable;
     use HasRoles;
     use InteractsWithMedia;
+    use Prunable;
 
     public $table = 'users';
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'avatar_id',
+        'last_login_time',
+        'last_login_ip',
+        'active',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'last_login_time' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 
     public $orderable = [
         'id',
@@ -46,29 +70,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'roles.name',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'avatar_id',
-        'last_login_time',
-        'last_login_ip',
-        'active',
-    ];
-
-    protected $dates = [
-        'email_verified_at',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     protected $appends = ['registered'];
+
+    public function prunable()
+    {
+        return static::where('created_at', '<=', now()->subMonths(2))->whereNull('email_verified_at');
+    }
+
+    protected function pruning()
+    {
+        echo 'Pruning ' . $this->name . PHP_EOL;
+    }
 
     public function scopeToday($query)
     {
@@ -87,41 +99,29 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function getRegisteredAttribute($value)
     {
-//        return $this->created_at->diffForHumans();
-        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans() : null;
+        return $this->created_at ? $this->created_at->diffForHumans() : null;
     }
 
-    public function setPasswordAttribute($input)
+    public function setPasswordAttribute($value)
     {
-        if ($input) {
-            $this->attributes['password'] = Hash::needsRehash($input) ? Hash::make($input) : $input;
+        if ($value) {
+            $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
         }
     }
 
     public function getEmailVerifiedAtAttribute($value)
     {
-        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(
-            config('project.datetime_format')
-        ) : null;
-    }
-
-    public function setEmailVerifiedAtAttribute($value)
-    {
-        $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(
-            config('project.datetime_format'),
-            $value
-        )->format('Y-m-d H:i:s') : null;
+        $dateFormat = config("admin.dates." . app()->getLocale() . ".datetime_format");
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format($dateFormat) : null;
     }
 
     public function registerMediaCollections(): void
     {
         $this
             ->addMediaCollection('avatar')
-            //->singleFile() // limitar a somente 1 imagem
             //->useDisk('s3') // Usando um disco específico
+            //->singleFile() // limitar a somente 1 imagem
             //->onlyKeepLatest(3) // limitar a 3 imagens
-            ->useFallbackUrl('/img/no-user.png')
-            ->useFallbackPath(public_path('/img/no-user.png'))
             ->withResponsiveImages()
             ->acceptsFile(
                 function (File $file) {
@@ -130,10 +130,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             )
             ->registerMediaConversions(
                 function (Media $media) {
-                    // $this->addMediaConversion('card')
-                    //     ->width(400)
-                    //     ->height(300);
-
                     $this->addMediaConversion('thumb')
                         ->width(100)
                         ->height(100);
@@ -141,7 +137,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             );
 
         $this
-            ->addMediaCollection('fotos')
+            ->addMediaCollection('photos')
             ->acceptsFile(
                 function (File $file) {
                     return in_array($file->mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/tiff']);
@@ -160,10 +156,5 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function avatar()
     {
         return $this->hasOne(Media::class, 'id', 'avatar_id');
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
     }
 }

@@ -1,9 +1,9 @@
-<aside class="main-sidebar sidebar-{{ config('project.sidebar_theme') }}-{{ config('project.color') }} elevation-4">
+<aside class="main-sidebar sidebar-{{ config('admin.sidebar_theme') }}-{{ config('admin.color') }} elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ route('admin.dashboard') }}" class="brand-link">
-        <img src="{{ asset(config('project.logo_img'))}}" alt="..."
+    <a href="{{ route('index') }}" class="brand-link">
+        <img src="{{ asset(config('admin.logo_img'))}}" alt="..."
              class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">{!! config('project.logo') !!}</span>
+        <span class="brand-text font-weight-light">{!! config('admin.logo') !!}</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +13,7 @@
             <a href="{{ route('profile') }}" class="d-inline-flex align-items-center" title="{{ __('Profile') }}">
                 <div class="image mr-2">
                     @if(auth()->user()->avatar)
-                        <img src="{{ auth()->user()->avatar->getUrl('thumb') }}" class="img-circle elevation-2"
+                        <img src="{{ auth()->user()->avatar->getUrl() }}" class="img-circle elevation-2"
                              style="width: 35px;height: 35px;">
                     @else
                         <img src="{{ asset('img/no-user.png') }}" class="img-circle elevation-2"
@@ -29,13 +29,6 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview"
                 role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}"
-                       class="nav-link {{ request()->is(config('project.prefix')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tv"></i>
-                        <p>@lang('project.dashboard.title_singular')</p>
-                    </a>
-                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('home') }}" class="nav-link">
@@ -44,14 +37,24 @@
                     </a>
                 </li>
 
+                @can('dashboard')
+                    <li class="nav-item">
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="nav-link {{ request()->is(config('admin.prefix')) ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tv"></i>
+                            <p>@lang('project.dashboard.title_singular')</p>
+                        </a>
+                    </li>
+                @endcan
+
                 @canany(['user-read', 'role-read', 'permission-read', 'debug', 'command'])
                     @php
                         $menuOpen = request()->is(
-                            config('project.prefix') . '/users*',
-                            config('project.prefix') . '/roles*',
-                            config('project.prefix') . '/permissions*',
-                            config('project.prefix') . '/backups*',
-                            config('project.prefix') . '/debug*',
+                            config('admin.prefix') . '/users*',
+                            config('admin.prefix') . '/roles*',
+                            config('admin.prefix') . '/permissions*',
+                            config('admin.prefix') . '/backups*',
+                            config('admin.prefix') . '/debug*',
                         ) ? true : false;
                     @endphp
                     <li class="nav-item has-treeview {{ $menuOpen ? 'menu-open' : '' }}">
@@ -66,7 +69,7 @@
                             @can('user-read')
                                 <li class="nav-item">
                                     <a href="{{ route('admin.users.index') }}" class="nav-link {{
-                                        request()->is(config('project.prefix') . '/users*') ? 'active' : ''
+                                        request()->is(config('admin.prefix') . '/users*') ? 'active' : ''
                                     }}">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>@lang('project.user.title')</p>
@@ -77,7 +80,7 @@
                             @can('role-read')
                                 <li class="nav-item">
                                     <a href="{{ route('admin.roles.index') }}" class="nav-link {{
-                                        request()->is(config('project.prefix') . '/roles*') ? 'active' : ''
+                                        request()->is(config('admin.prefix') . '/roles*') ? 'active' : ''
                                     }}">
                                         <i class="nav-icon fas fa-briefcase"></i>
                                         <p>@lang('project.role.title')</p>
@@ -88,7 +91,7 @@
                             @can('permission-read')
                                 <li class="nav-item">
                                     <a href="{{ route('admin.permissions.index') }}" class="nav-link {{
-                                        request()->is(config('project.prefix') . '/permissions*') ? 'active' : ''
+                                        request()->is(config('admin.prefix') . '/permissions*') ? 'active' : ''
                                     }}">
                                         <i class="nav-icon fas fa-unlock-alt"></i>
                                         <p>@lang('project.permission.title')</p>
@@ -98,8 +101,8 @@
 
                             @can('debug')
                                 <li class="nav-item">
-                                    <a href="{{ url(config('project.prefix') . '/debug') }}" class="nav-link{{
-                                            request()->is(config('project.prefix') . '/debug*') ? 'active' : ''
+                                    <a href="{{ url(config('admin.prefix') . '/debug') }}" class="nav-link{{
+                                            request()->is(config('admin.prefix') . '/debug*') ? 'active' : ''
                                     }}">
                                         <i class="nav-icon fas fa-bug"></i>
                                         <p>@lang('project.debug.title')</p>
@@ -109,8 +112,8 @@
 
                             @can('backup')
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.backup') }}" class="nav-link {{
-                                        request()->is(config('project.prefix') . '/backups*') ? 'active' : ''
+                                    <a href="{{ route('admin.backups') }}" class="nav-link {{
+                                        request()->is(config('admin.prefix') . '/backups*') ? 'active' : ''
                                     }}">
                                         <i class="nav-icon fas fa-hdd"></i>
                                         <p>Backups</p>

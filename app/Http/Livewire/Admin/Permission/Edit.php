@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Admin\Permission;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -15,16 +17,17 @@ class Edit extends Component
 
     public array $listsForFields = [];
 
+    public function render()
+    {
+        abort_if(Gate::denies('permission-update'), Response::HTTP_FORBIDDEN);
+        return view('livewire.admin.permission.edit');
+    }
+
     public function mount(Permission $permission)
     {
         $this->permission = $permission;
         $this->roles = $this->permission->roles()->pluck('id')->toArray();
         $this->initListsForFields();
-    }
-
-    public function render()
-    {
-        return view('livewire.admin.permission.edit');
     }
 
     public function submit()

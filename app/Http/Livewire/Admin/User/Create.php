@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Admin\User;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class Create extends Component
@@ -19,15 +21,16 @@ class Create extends Component
 
     public array $listsForFields = [];
 
+    public function render()
+    {
+        abort_if(Gate::denies('user-create'), Response::HTTP_FORBIDDEN);
+        return view('livewire.admin.user.create');
+    }
+
     public function mount(User $user)
     {
         $this->user = $user;
         $this->initListsForFields();
-    }
-
-    public function render()
-    {
-        return view('livewire.admin.user.create');
     }
 
     public function submit()

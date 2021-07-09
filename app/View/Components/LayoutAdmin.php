@@ -13,6 +13,6 @@ class LayoutAdmin extends Component
      */
     public function render()
     {
-        return view(config('project.theme'));
+        return view(config('admin.theme'));
     }
 }

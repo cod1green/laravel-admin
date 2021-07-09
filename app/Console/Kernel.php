@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
     {
         //$schedule->command(Log::info("It's working"))->everyMinute();
 
+        $schedule->command('model:prune')->daily()->at('23:59');
+
         $schedule->command('queue:restart')->everyFiveMinutes();
         $schedule->command('queue:work --sleep=3 --tries=3')->everyMinute()->withoutOverlapping();
 

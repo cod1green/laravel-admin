@@ -65,6 +65,19 @@ return [
     'flatpickr_time_format' => 'H:i:S',
     'flatpickr_datetime_format' => 'Y-m-d H:i:S',
 
+    'dates' => [
+        'en' => [
+            'date_format' => 'Y-m-d',
+            'time_format' => 'H:i:s',
+            'datetime_format' => 'Y-m-d H:i:s',
+        ],
+        'pt_BR' => [
+            'date_format' => 'd/m/Y',
+            'time_format' => 'H:i:s',
+            'datetime_format' => 'd/m/Y H:i:s',
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Languages

@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Admin\Role;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -15,15 +17,16 @@ class Create extends Component
 
     public array $listsForFields = [];
 
+    public function render()
+    {
+        abort_if(Gate::denies('role-create'), Response::HTTP_FORBIDDEN);
+        return view('livewire.admin.role.create');
+    }
+
     public function mount(Role $role)
     {
         $this->role = $role;
         $this->initListsForFields();
-    }
-
-    public function render()
-    {
-        return view('livewire.admin.role.create');
     }
 
     public function submit()

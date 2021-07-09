@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class BackupDownloadController extends Controller
+class DownloadController extends Controller
 {
     public function __invoke(string $disk, string $file): StreamedResponse
     {
