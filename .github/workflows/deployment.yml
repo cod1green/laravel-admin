@@ -90,8 +90,8 @@ jobs:
           key: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd ~/
-            ./server_deploy.sh
+            cd ~/deploy
+            ./laravel_gym_deploy.sh
 
   remove-branch:
     name: Remove the deploy branch
