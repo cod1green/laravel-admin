@@ -5,7 +5,7 @@
         </li>
     </ul>
 
-    <ul class="navbar-nav ml-auto">
+    {{-- <ul class="navbar-nav ml-auto">
         @include('components.messages')
         @include('components.notifications')
 
@@ -14,5 +14,5 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
-    </ul>
+    </ul>--}}
 </nav>
