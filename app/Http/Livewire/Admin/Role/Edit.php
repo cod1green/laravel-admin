@@ -49,7 +49,6 @@ class Edit extends Component
                 'required',
             ],
             'permissions' => [
-                'required',
                 'array',
             ],
             'permissions.*.id' => [

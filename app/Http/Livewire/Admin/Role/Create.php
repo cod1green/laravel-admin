@@ -49,7 +49,6 @@ class Create extends Component
                 'required',
             ],
             'permissions' => [
-                'required',
                 'array',
             ],
             'permissions.*.id' => [
