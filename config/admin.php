@@ -37,7 +37,7 @@ return [
     * Color: blue, black, purple, yellow, red, green
     * Ligth: blue-light, purple-light, purple-light
     */
-    'color' => 'green',
+    'color' => 'red',
 
     /*
     |--------------------------------------------------------------------------
