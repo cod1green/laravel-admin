@@ -10,12 +10,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Layouts Frontend: agency, agency-2, beauty, blog, blog-2, construction, corporate-1, corporate-2, corporate-3,
+    | Layouts Frontend: index, agency, agency-2, beauty, blog, blog-2, construction, corporate-1, corporate-2, corporate-3,
     | corporate-4, corporate-5, corporate-6, education, gym, hotel, landing, landing-2, logistics, medical, one-page,
     | portfolio, portfolio-2, restaurant, restaurant-2, resume, shop, shop-2, wedding
     |--------------------------------------------------------------------------
     */
-    'layout_frontend' => 'layouts.frontend.muaythai',
+    'layout_frontend' => 'layouts.frontend.' . env('APP_LAYOUT_FRONTEND', 'index'),
     /*
 
     /*
