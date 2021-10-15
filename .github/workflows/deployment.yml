@@ -91,7 +91,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd ~/deploy
-            ./laravel_gym_deploy.sh
+            ./laravel_admin_deploy.sh
 
   remove-branch:
     name: Remove the deploy branch
