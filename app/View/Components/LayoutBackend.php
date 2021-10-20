@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class LayoutAdmin extends Component
+class LayoutBackend extends Component
 {
     /**
      * Get the view / contents that represents the component.
@@ -13,6 +13,6 @@ class LayoutAdmin extends Component
      */
     public function render()
     {
-        return view(config('admin.layout_admin'));
+        return view(config('admin.layout_backend'));
     }
 }

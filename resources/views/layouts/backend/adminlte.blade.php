@@ -16,11 +16,10 @@
         @show
     </title>
 
-    @include('components.styles')
+    <link href="{{ asset('css/backend.css') }}" rel="stylesheet">
 
     @livewireStyles
 
-    @yield('styles')
     @stack('styles')
 </head>
 
@@ -29,29 +28,31 @@
     {{ config('admin.sidebar_collapse') ? 'sidebar-collapse': '' }}">
 
 <div id="app" class="wrapper">
-    @include('components.navbar')
+    @include('layouts.backend.partials.navbar')
 
-    @include('components.sidebar-left')
+    @include('layouts.backend.partials.sidebar-left')
 
     <div class="content-wrapper">
         @yield('content')
         {{ $slot ?? '' }}
     </div>
 
-    @include('components.sidebar-rigth')
+    @include('layouts.backend.partials.sidebar-rigth')
 
-    @include('components.footer')
+    @include('layouts.backend.partials.footer')
 </div>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>
 
-@include('components.scripts')
+<script src="{{ asset('js/backend.js') }}"></script>
+
+@stack('before-livewire-scripts')
 
 @livewireScripts
 
-@yield('scripts')
+@stack('after-livewire-scripts')
 @stack('scripts')
 </body>
 </html>

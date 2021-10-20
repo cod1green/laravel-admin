@@ -20,10 +20,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Layouts Admin: 'layouts.adminlte'
+    | Layouts Backend: 'adminlte'
     |--------------------------------------------------------------------------
     */
-    'layout_admin' => 'layouts.admin.adminlte',
+    'layout_backend' => 'layouts.backend.' . env('APP_LAYOUT_BACKEND', 'adminlte'),
     /*
 
     |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'logo' => env('APP_NAME', 'Laravel'),
-    'logo_img' => env('APP_LOGO', 'vendor/admin-lte/dist/img/AdminLTELogo.png'),
+    'logo_img' => env('APP_LOGO', 'img/backend/AdminLTELogo.png'),
 
     /*
     |--------------------------------------------------------------------------

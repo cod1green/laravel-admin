@@ -1,22 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/vendor/admin-lte/.babelrc.js": "/vendor/admin-lte/.babelrc.js",
-    "/vendor/admin-lte/.bundlewatch.config.json": "/vendor/admin-lte/.bundlewatch.config.json",
-    "/vendor/admin-lte/.eslintrc.json": "/vendor/admin-lte/.eslintrc.json",
-    "/vendor/admin-lte/.gitpod.yml": "/vendor/admin-lte/.gitpod.yml",
-    "/vendor/admin-lte/CODE_OF_CONDUCT.md": "/vendor/admin-lte/CODE_OF_CONDUCT.md",
-    "/vendor/admin-lte/README.md": "/vendor/admin-lte/README.md",
-    "/vendor/admin-lte/composer.json": "/vendor/admin-lte/composer.json",
-    "/vendor/admin-lte/iframe.html": "/vendor/admin-lte/iframe.html",
-    "/vendor/admin-lte/index.html": "/vendor/admin-lte/index.html",
-    "/vendor/admin-lte/index2.html": "/vendor/admin-lte/index2.html",
-    "/vendor/admin-lte/index3.html": "/vendor/admin-lte/index3.html",
-    "/vendor/admin-lte/package.json": "/vendor/admin-lte/package.json",
-    "/vendor/admin-lte/starter.html": "/vendor/admin-lte/starter.html",
-    "/vendor/admin-lte/test.html": "/vendor/admin-lte/test.html",
-    "/vendor/underscore/underscore-min.js": "/vendor/underscore/underscore-min.js",
-    "/vendor/toastify-js/toastify-es.js": "/vendor/toastify-js/toastify-es.js",
-    "/vendor/toastify-js/toastify.css": "/vendor/toastify-js/toastify.css",
-    "/vendor/toastify-js/toastify.js": "/vendor/toastify-js/toastify.js"
+    "/js/backend.js": "/js/backend.js",
+    "/css/backend.css": "/css/backend.css",
+    "/css/app.css": "/css/app.css"
 }

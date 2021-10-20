@@ -10,8 +10,8 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.15.2",
-        "admin-lte": "^3.0.5",
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "admin-lte": "^3.1",
         "axios": "^0.21",
         "bootstrap": "^4.0.0",
         "flatpickr": "^4.6.9",
@@ -24,7 +24,6 @@
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
         "toastify-js": "^1.11.0",
-        "underscore": "^1.13.1",
         "vue": "^2.5.17",
         "vue-loader": "^15.9.6",
         "vue-template-compiler": "^2.6.10"
