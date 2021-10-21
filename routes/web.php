@@ -16,5 +16,3 @@ Route::middleware(['verified'])->group(
         Route::get('profile', Profile::class)->middleware('auth')->name('profile');
     }
 );
-
-require __DIR__ . '/web/admin.php';

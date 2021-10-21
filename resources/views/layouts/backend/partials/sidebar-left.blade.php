@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-{{ config('admin.sidebar_theme') }}-{{ config('admin.color') }} elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('index') }}" class="brand-link">
-        <img src="{{ asset(config('admin.logo_img'))}}" alt="..."
+        <img src="{{ asset(config('admin.logo_img'))}}" alt="Logo"
              class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{!! config('admin.logo') !!}</span>
     </a>
@@ -11,7 +11,7 @@
         <!-- Sidebar User -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <a href="{{ route('profile') }}" class="d-inline-flex align-items-center" title="{{ __('Profile') }}">
-                <div class="image mr-2">
+                <div class="image">
                     @if(auth()->user()->avatar)
                         <img src="{{ auth()->user()->avatar->getUrl() }}" class="img-circle elevation-2"
                              style="width: 35px;height: 35px;">
@@ -20,8 +20,7 @@
                              style="width: 35px;height: 35px;">
                     @endif
                 </div>
-
-                <span>{{ auth()->user()->name }}</span>
+                <div class="info">{{ auth()->user()->name }}</div>
             </a>
         </div>
 
@@ -31,7 +30,7 @@
                 role="menu" data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="{{ route('home') }}" class="nav-link">
+                    <a href="{{ route('home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-home"></i>
                         <p>@lang('project.home.title')</p>
                     </a>

@@ -157,4 +157,13 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return $this->hasOne(Media::class, 'id', 'avatar_id');
     }
+
+    public function isAdmin()
+    {
+        if ($this->hasRole(Role::ADMIN)) {
+            return true;
+        }
+
+        return false;
+    }
 }
