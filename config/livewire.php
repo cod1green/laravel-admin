@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'layout' => config('admin.layout_backend'),
+    'layout' => config('admin.backend_layout'),
 
     /*
     |--------------------------------------------------------------------------

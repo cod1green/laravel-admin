@@ -14,18 +14,20 @@
         @section('title')
             Admin
         @show
+        :: {{ setting('site_title') ?: \App\Models\NullSetting::make()->site_title }}
     </title>
 
     <link href="{{ asset('css/backend.css') }}" rel="stylesheet">
 
-    @livewireStyles
-
+    @stack('css')
     @stack('styles')
+
+    @livewireStyles
 </head>
 
 <body
     class="hold-transition sidebar-mini accent-{{ config('admin.color') }}
-    {{ config('admin.sidebar_collapse') ? 'sidebar-collapse': '' }}">
+    {{ setting('sidebar_collapse') ? 'sidebar-collapse': '' }}">
 
 <div id="app" class="wrapper">
     @include('layouts.backend.partials.navbar')
@@ -49,10 +51,11 @@
 <script src="{{ asset('js/backend.js') }}"></script>
 
 @stack('before-livewire-scripts')
-
 @livewireScripts
-
 @stack('after-livewire-scripts')
+
+@stack('js')
 @stack('scripts')
+
 </body>
 </html>

@@ -15,7 +15,7 @@ return [
     | portfolio, portfolio-2, restaurant, restaurant-2, resume, shop, shop-2, wedding
     |--------------------------------------------------------------------------
     */
-    'layout_frontend' => 'layouts.frontend.' . env('APP_LAYOUT_FRONTEND', 'index'),
+    'frontend_layout' => 'layouts.frontend.' . env('APP_LAYOUT_FRONTEND', 'index'),
     /*
 
     /*
@@ -23,26 +23,10 @@ return [
     | Layouts Backend: 'adminlte'
     |--------------------------------------------------------------------------
     */
-    'layout_backend' => 'layouts.backend.' . env('APP_LAYOUT_BACKEND', 'adminlte'),
-    /*
+    'backend_layout' => 'layouts.backend.' . env('APP_LAYOUT_BACKEND', 'adminlte'),
+    'backend_logo' => 'img/backend/AdminLTELogo.png',
+    'backend_site_name' => env('APP_NAME', 'Laravel'),
 
-    |--------------------------------------------------------------------------
-    | Logo
-    |--------------------------------------------------------------------------
-    */
-    'logo' => env('APP_NAME', 'Laravel'),
-    'logo_img' => env('APP_LOGO', 'img/backend/AdminLTELogo.png'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Sidebar
-    |--------------------------------------------------------------------------
-    */
-    'sidebar_collapse' => false,
-    /*
-    * Theme: 'light', 'dark'
-    */
-    'sidebar_theme' => 'dark',
     /*
     * Color: blue, black, purple, yellow, red, green
     * Ligth: blue-light, purple-light, purple-light
@@ -55,9 +39,8 @@ return [
     |--------------------------------------------------------------------------
     */
     'since_year' => env('APP_SINCE_YEAR', date('Y')),
-    'footer_name' => env('APP_FOOTER_NAME', 'Laravel'),
-    'produced_by' => env('APP_PRODUCED_BY', 'Laravel'),
-    'produced_url' => env('APP_PRODUCED_URL', 'https://laravel.com'),
+    'produced_by' => env('APP_PRODUCED_BY', 'Cod1green'),
+    'produced_url' => env('APP_PRODUCED_URL', 'https://cod1green.com'),
     /*
      * Text Size:  null, 'text-sm'
      */

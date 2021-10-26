@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'profile' => [
+        'title' => 'Perfis',
+        'title_singular' => 'Perfil',
+    ],
     'home' => [
         'title' => 'Home page',
         'title_singular' => 'Home page',
@@ -83,7 +87,7 @@ return [
     'permission' => [
         'title' => 'Permissions',
         'title_singular' => 'Permission',
-        'create' => 'create permission',
+        'create' => 'Create permission',
         'edit' => 'Edit permission',
         'delete' => 'Delete permission',
         'show' => 'Show permission',
@@ -103,6 +107,50 @@ return [
             'deleted_at_helper' => ' ',
         ],
     ],
+    'setting' => [
+        'title' => 'Settings',
+        'title_singular' => 'Setting',
+        'updated' => 'Settings updated successfully',
+    ],
+    'backup' => [
+        'title' => 'Backups',
+        'title_singular' => 'Backup',
+        'create' => 'Create backup',
+        'create_only_file' => 'Create file backup',
+        'create_only_database' => 'Create database backup',
+        'edit' => 'Edit backup',
+        'delete' => 'Delete backup',
+        'show' => 'Show backup',
+        'list' => 'Backup list',
+        'no_backup_present' => 'No backup present',
+        'question_delete' => 'Are you sure you want to delete the backup created in :created ?',
+        'fields' => [
+            'id' => 'ID',
+            'id_helper' => ' ',
+            'name' => 'Name',
+            'name_helper' => ' ',
+            'disk' => 'Disk',
+            'disk_helper' => ' ',
+            'healthy' => 'Healthy',
+            'healthy_helper' => ' ',
+            'amount' => 'Amount',
+            'amount_helper' => ' ',
+            'newest' => 'Newest backup',
+            'newest_helper' => ' ',
+            'used_storage' => 'Used storage',
+            'used_storage_helper' => ' ',
+            'path' => 'Path',
+            'path_helper' => ' ',
+            'size' => 'Size',
+            'size_helper' => ' ',
+            'created_at' => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at' => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at' => 'Deleted at',
+            'deleted_at_helper' => ' ',
+        ],
+    ],
     'command' => [
         'title' => 'Commands',
         'title_singular' => 'Command',
@@ -110,13 +158,5 @@ return [
     'debug' => [
         'title' => 'Debugs',
         'title_singular' => 'Debug',
-    ],
-    'backup' => [
-        'title' => 'Backups',
-        'title_singular' => 'Backup',
-    ],
-    'profile' => [
-        'title' => 'Perfis',
-        'title_singular' => 'Perfil',
     ],
 ];

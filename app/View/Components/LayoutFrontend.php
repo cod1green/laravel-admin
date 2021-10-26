@@ -8,6 +8,6 @@ class LayoutFrontend extends Component
 {
     public function render()
     {
-        return view(config('admin.layout_frontend'));
+        return view(config('admin.frontend_layout'));
     }
 }

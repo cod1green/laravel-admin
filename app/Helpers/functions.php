@@ -1,5 +1,22 @@
 <?php
 
+use App\Models\NullSetting;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
+
+if (!function_exists('setting')) {
+    function setting($key)
+    {
+        $setting = Cache::rememberForever('setting', function () {
+            return Setting::first() ?? NullSetting::make();
+        });
+
+        if ($setting) {
+            return $setting->{$key};
+        }
+    }
+}
+
 if (!function_exists('parseLocale')) {
     /**
      * Obtem a localização com base na URL
@@ -496,12 +513,12 @@ if (!function_exists('array_sort')) {
      * EXEMPLO de COMO USAR O a funcao array_sort()
      * --------------------------------------------
      * $people = array(
-    *           12345 => array(
-    *           'id' => 12345,
-    *           'first_name' => 'Joe',
-    *           'surname' => 'Bloggs',
-    *           'age' => 23,
-    *           'sex' => 'm'
+     *           12345 => array(
+     *           'id' => 12345,
+     *           'first_name' => 'Joe',
+     *           'surname' => 'Bloggs',
+     *           'age' => 23,
+     *           'sex' => 'm'
      *      ),
      *      12346 => array(
      *          'id' => 12346,

@@ -1,9 +1,11 @@
-<aside class="main-sidebar sidebar-{{ config('admin.sidebar_theme') }}-{{ config('admin.color') }} elevation-4">
+<aside class="main-sidebar sidebar-dark-{{ config('admin.color') }} elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('index') }}" class="brand-link">
-        <img src="{{ asset(config('admin.logo_img'))}}" alt="Logo"
+        <img src="{{ asset(config('admin.backend_logo'))}}" alt="Logo"
              class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">{!! config('admin.logo') !!}</span>
+        <span class="brand-text font-weight-light">
+            {!! setting('site_name') ?: \App\Models\NullSetting::make()->site_name !!}
+        </span>
     </a>
 
     <!-- Sidebar -->
@@ -46,12 +48,13 @@
                     </li>
                 @endcan
 
-                @canany(['user-read', 'role-read', 'permission-read', 'debug', 'command'])
+                @canany(['user-read', 'role-read', 'permission-read', 'setting', 'command', 'debug'])
                     @php
                         $menuOpen = request()->is(
                             config('admin.prefix') . '/users*',
                             config('admin.prefix') . '/roles*',
                             config('admin.prefix') . '/permissions*',
+                            config('admin.prefix') . '/settings*',
                             config('admin.prefix') . '/backups*',
                             config('admin.prefix') . '/debug*',
                         ) ? true : false;
@@ -98,13 +101,13 @@
                                 </li>
                             @endcan
 
-                            @can('debug')
+                            @can('setting')
                                 <li class="nav-item">
-                                    <a href="{{ url(config('admin.prefix') . '/debug') }}" class="nav-link{{
-                                            request()->is(config('admin.prefix') . '/debug*') ? 'active' : ''
+                                    <a href="{{ route('admin.settings') }}" class="nav-link {{
+                                        request()->is(config('admin.prefix') . '/settings*') ? 'active' : ''
                                     }}">
-                                        <i class="nav-icon fas fa-bug"></i>
-                                        <p>@lang('project.debug.title')</p>
+                                        <i class="nav-icon fas fa-cog"></i>
+                                        <p>@lang('project.setting.title')</p>
                                     </a>
                                 </li>
                             @endcan
@@ -115,7 +118,7 @@
                                         request()->is(config('admin.prefix') . '/backups*') ? 'active' : ''
                                     }}">
                                         <i class="nav-icon fas fa-hdd"></i>
-                                        <p>Backups</p>
+                                        <p>@lang('project.backup.title')</p>
                                     </a>
                                 </li>
                             @endcan
@@ -144,6 +147,17 @@
                                             </a>
                                         </li>
                                     </ul>
+                                </li>
+                            @endcan
+
+                            @can('debug')
+                                <li class="nav-item">
+                                    <a href="{{ url(config('admin.prefix') . '/debug') }}" class="nav-link{{
+                                            request()->is(config('admin.prefix') . '/debug*') ? 'active' : ''
+                                    }}">
+                                        <i class="nav-icon fas fa-bug"></i>
+                                        <p>@lang('project.debug.title')</p>
+                                    </a>
                                 </li>
                             @endcan
                         </ul>

@@ -13,6 +13,6 @@ class LayoutBackend extends Component
      */
     public function render()
     {
-        return view(config('admin.layout_backend'));
+        return view(config('admin.backend_layout'));
     }
 }
