@@ -14,5 +14,7 @@ try {
     require('admin-lte/plugins/select2/js/i18n/pt-BR.js');
 
     require('./sidebar-rigth');
+    require('./backend_ready');
+
 } catch (e) {
 }

@@ -19,7 +19,7 @@ class Administrator
         if (auth()->check() && auth()->user()->isAdmin()) {
             return $next($request);
         }
-        
+
         abort(403);
     }
 }

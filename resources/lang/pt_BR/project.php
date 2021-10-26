@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'profile' => [
+        'title' => 'Perfis',
+        'title_singular' => 'Perfil',
+    ],
     'home' => [
         'title' => 'Página inicial',
         'title_singular' => 'Página inicial',
@@ -103,13 +107,10 @@ return [
             'deleted_at_helper' => ' ',
         ],
     ],
-    'command' => [
-        'title' => 'Comandos',
-        'title_singular' => 'Comando',
-    ],
-    'debug' => [
-        'title' => 'Depurar',
-        'title_singular' => 'Depurar',
+    'setting' => [
+        'title' => 'Configurações',
+        'title_singular' => 'Configuração',
+        'updated' => 'Configurações atualizadas com sucesso',
     ],
     'backup' => [
         'title' => 'Backups',
@@ -150,8 +151,12 @@ return [
             'deleted_at_helper' => ' ',
         ],
     ],
-    'profile' => [
-        'title' => 'Perfis',
-        'title_singular' => 'Perfil',
+    'command' => [
+        'title' => 'Comandos',
+        'title_singular' => 'Comando',
+    ],
+    'debug' => [
+        'title' => 'Depurar',
+        'title_singular' => 'Depurar',
     ],
 ];
