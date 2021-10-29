@@ -4,7 +4,7 @@
         <img src="{{ asset(config('admin.backend_logo'))}}" alt="Logo"
              class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">
-            {!! setting('site_name') ?: \App\Models\NullSetting::make()->site_name !!}
+            {!! setting('site_name') !!}
         </span>
     </a>
 

@@ -1,7 +1,7 @@
 <footer class="main-footer {{ config('admin.footer_text_size') }}">
     <strong>&copy; {{ config('admin.since_year') }}
         <a href="{{ route('home') }}">
-            <b>{{ setting('footer_name') ?: \App\Models\NullSetting::make()->footer_name }}</b>
+            <b>{{ setting('footer_name') }}</b>
         </a> • @lang('global.all_rights_reserved')
     </strong>
 

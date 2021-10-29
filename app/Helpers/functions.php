@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\NullSetting;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 
@@ -8,7 +7,13 @@ if (!function_exists('setting')) {
     function setting($key)
     {
         $setting = Cache::rememberForever('setting', function () {
-            return Setting::first() ?? NullSetting::make();
+            return Setting::first() ?? Setting::factory()->make([
+                    'site_name' => config('app.name', 'Laravel Admin'),
+                    'site_title' => ucfirst(config('admin.prefix', 'admin')),
+                    'site_email' => env('APP_ADMIN_EMAIL', 'mail@example.com'),
+                    'footer_name' => config('app.name', 'Laravel Admin'),
+                    'sidebar_collapse' => false,
+                ]);
         });
 
         if ($setting) {
