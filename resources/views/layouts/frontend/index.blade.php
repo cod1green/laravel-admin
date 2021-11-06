@@ -152,13 +152,69 @@
                             <!-- header top dropdowns start -->
                             <!-- ================ -->
                             <div class="header-top-dropdown text-right">
-                                <div class="btn-group">
-                                    <a href="#" class="btn btn-default btn-sm"><i class="fa fa-user pr-2"></i>
-                                        Inscrever-se</a>
-                                </div>
-                                <div class="btn-group">
-                                    <a href="#" class="btn btn-default btn-sm"><i class="fa fa-lock pr-2"></i> Login</a>
-                                </div>
+                                @guest
+                                    @if (Route::has('register'))
+                                        <div class="btn-group">
+                                            <a href="{{ route('register') }}" class="btn btn-default btn-sm"><i
+                                                    class="fa fa-user pr-2"></i>
+                                                {{ __('Register') }}
+                                            </a>
+                                        </div>
+                                    @endif
+                                    <div class="btn-group">
+                                        <a href="{{ route('login') }}" class="btn btn-default btn-sm"><i
+                                                class="fa fa-lock pr-2"></i>
+                                            {{ __('Login') }}
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                                id="header-drop-user" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            <div class="list-inline my-0">
+                                                @if(Auth::user()->avatar)
+                                                    <img src="{{ Auth::user()->avatar->getUrl() }}" width="20"
+                                                         height="20"
+                                                         alt="avatar" class="rounded-circle list-inline-item">
+                                                @else
+                                                    <img src="{{ asset('img/no-user.png') }}" width="20" height="20"
+                                                         alt="avatar"
+                                                         class="rounded-circle list-inline-item">
+                                                @endif
+                                                <span class="list-inline-item">{{ Auth::user()->name }}</span>
+                                            </div>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right"
+                                            aria-labelledby="header-drop-user">
+                                            @can('dashboard')
+                                                <li class="dropdown-item">
+                                                    <a href="{{ route('admin.dashboard') }}">
+                                                        <i class="fa fa-btn fa-tv"></i> @lang('project.dashboard.title')
+                                                    </a>
+                                                </li>
+                                            @endcan
+                                            
+                                            <li class="dropdown-item">
+                                                <a href="{{ route('profile') }}">
+                                                    <i class="fa fa-btn fa-user"></i> @lang('project.profile.title_singular')
+                                                </a>
+                                            </li>
+
+                                            <li class="dropdown-item">
+                                                <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                    <i class="fa fa-power-off"></i> @lang('global.logout')
+                                                </a>
+
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                      class="d-none">
+                                                    @csrf
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endguest
                             </div>
                             <!--  header top dropdowns end -->
                         </div>
