@@ -8070,11 +8070,6 @@ h6.media-heading {
     animation-fill-mode: both;
 }
 
-.footer-whatsapp:hover {
-    width: 65px;
-    height: 65px;
-}
-
 /* Small devices (tablets, phones less than 767px) */
 @media (max-width: 767px) {
     .footer-whatsapp {
