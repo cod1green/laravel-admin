@@ -550,7 +550,7 @@
                                  data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
                                  data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;">
                                 Chega de rotina! Bora treinar 💪🏽🔥!<br>
-                                O Muathai é um esporte dinâmico, que promove a melhora do condicionamento<br>
+                                O Muaythai é um esporte dinâmico, que promove a melhora do condicionamento<br>
                                 físico e mental, além de promover o fortalecimento muscular,<br>
                                 aumenta a elasticidade e favorece o funcionamento cardiovascular.<br>
                                 Estamos te esperando 🥊🥊😎.

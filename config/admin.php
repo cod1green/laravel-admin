@@ -15,7 +15,7 @@ return [
     | portfolio, portfolio-2, restaurant, restaurant-2, resume, shop, shop-2, wedding
     |--------------------------------------------------------------------------
     */
-    'frontend_layout' => 'layouts.frontend.' . env('APP_LAYOUT_FRONTEND', 'index'),
+    'frontend_layout' => env('APP_LAYOUT_FRONTEND', 'layouts.app'),
     /*
 
     /*
