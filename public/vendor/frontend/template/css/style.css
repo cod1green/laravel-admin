@@ -7213,7 +7213,7 @@ header .container-fluid .animated.main-navigation .dropdown-menu .show .dropdown
 /*Header Top Dropdowns*/
 .header-top-dropdown .dropdown-menu {
     z-index: 103;
-    padding: 20px;
+    padding: 5px;
     min-width: 200px;
     margin-top: 6px;
     border: 1px solid #D0D0D0;
