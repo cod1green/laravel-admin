@@ -850,10 +850,24 @@
                             </div>
                             <div class="separator-2"></div>
                             <ul class="list-icons">
+                                <li>Matriz</li>
                                 <li>
                                     <i class="fa fa-map-marker pr-10 text-default"></i> R. Caminho Existente, 26 -
-                                    Jardim Santana, Cotia-SP, 06719-257
+                                    Jardim Santana, Cotia-SP
                                 </li>
+                            </ul>
+
+                            <div class="separator-2"></div>
+                            <ul class="list-icons">
+                                <li>Filial</li>
+                                <li>
+                                    <i class="fa fa-map-marker pr-10 text-default"></i> R. Perola, 147 - Jardim Nomura,
+                                    Cotia-SP
+                                </li>
+                            </ul>
+
+                            <div class="separator-2"></div>
+                            <ul class="list-icons">
                                 <li><i class="fa fa-phone pr-10 text-default"></i> (011) 96933-9297</li>
                                 <li>
                                     <a class="text-decoration-none" href="mailto:ctforcabruta@gmail.com">
